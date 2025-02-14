@@ -1,0 +1,620 @@
+﻿<Window x:Class="Gwent_Release.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Gwent_Release.Views"
+        xmlns:model="clr-namespace:Gwent_Release.Models"        
+        mc:Ignorable="d"
+        WindowState="Maximized"
+        ResizeMode="CanMinimize"
+        Closing="Window_Closing"
+        Title="Gwent" Height="1050" Width="1680">
+
+    <Window.Resources>
+
+        <local:Proxy x:Key="GameContext"/>
+        <local:CardPointsToColorConverter x:Key="CardPointsToColorConverter"/>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+
+        <DataTemplate x:Key="CardTemplate">
+            <Border MouseEnter="CardGrid_MouseEnter"
+                    MouseLeave="CardGrid_MouseLeave"
+                    BorderBrush="Transparent"
+                    BorderThickness="1">
+                <Grid x:Name="CardGrid" Width="76" Height="106"
+                      HorizontalAlignment="Center" VerticalAlignment="Center"
+                      IsHitTestVisible="True"                  
+                      MouseLeftButtonDown="Card_MouseLeftButtonDown"
+                      AllowDrop="True"
+                      Drop="CardGrid_Drop">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="23"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="23"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.Background>
+                        <ImageBrush ImageSource="{Binding DataContext.Image, RelativeSource={RelativeSource AncestorType=Grid}}"/>
+                    </Grid.Background>
+
+                    <TextBlock Grid.Column="0" Grid.Row="0"
+                           FontSize="12"
+                           Text="{Binding ActualCardScore}"
+                           Foreground="{Binding ObjectProperty, Converter={StaticResource CardPointsToColorConverter}}"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           Margin="0 0 1 1">
+                    </TextBlock>
+
+                    <Grid.ToolTip>
+                        <ToolTip Background="#8B4513">
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="{Binding CardInfo.Name}" Foreground="Black" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding CardInfo.Description}" Foreground="Black" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </ToolTip>
+                    </Grid.ToolTip>
+
+                </Grid>
+            </Border>
+        </DataTemplate>
+
+    </Window.Resources>
+
+    <Grid>
+        <Canvas x:Name="GameDesk" Height="1050" Width="1680" 
+            AllowDrop="True" 
+            DragOver="GameDesk_DragOver"
+            Drop="GameDesk_Drop">
+            <Canvas.Background>
+                <ImageBrush ImageSource="pack://application:,,,/Images/Deck.jpg"/>
+            </Canvas.Background>
+
+            <MediaElement Name="bgMusic" LoadedBehavior="Manual"/>
+
+            <!-- -->
+
+            <TextBlock Width="22"
+                   Height="34"
+                   Canvas.Top="362"
+                   Canvas.Left="236"
+                   Background="Transparent"
+                   FontSize="20"
+                   FontWeight="Medium"
+                   Foreground="#b58e43"
+                   TextAlignment="Center"
+                   Padding="0 3 0 0"
+                   Text="{Binding Player2.Hand.CardsCount, Source={StaticResource GameContext}}"/>
+
+            <!-- Player2SiegeBattleRow -->
+            <ItemsControl x:Name="Player2SiegeBattleRow" Width="707" Height="106" Canvas.Left="621" Canvas.Top="66"
+                      Background="Transparent"
+                      ItemsSource="{Binding Player2.SiegeBattleRow.BattleRowCards, Source={StaticResource GameContext}}" 
+                      HorizontalAlignment="Left" 
+                      VerticalAlignment="Center"
+                      AllowDrop="True"
+                      Drop="Player2SiegeBattleRow_Drop">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid HorizontalAlignment="Center"
+                                 Columns="{Binding Player2.SiegeBattleRow.CardsCount, Source={StaticResource GameContext}}"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <StaticResource ResourceKey="CardTemplate"/>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <ContentControl x:Name="Player2SiegeBattleRowHornSlot"
+                        Width="108"
+                        Height="106"
+                        Canvas.Top="66"
+                        Canvas.Left="504"
+                        Background="Transparent"
+                        ContentTemplate="{StaticResource CardTemplate}"
+                        Content="{Binding Player2.SiegeBattleRow.HornSlot, Source={StaticResource GameContext}}"/>
+
+            <TextBlock Width="42"
+                   Height="42"
+                   Canvas.Top="97"
+                   Canvas.Left="449"
+                   Background="Transparent"
+                   FontSize="20"
+                   TextAlignment="Center"
+                   Padding="0 6 1 0"
+                   Text="{Binding Player2.SiegeBattleRow.BatteRowScore, Source={StaticResource GameContext}}"/>
+
+            <!-- Player2MiddleBattleRow -->
+            <ItemsControl x:Name="Player2MiddleBattleRow" Width="707" Height="106" Canvas.Left="621" Canvas.Top="182"
+                      Background="Transparent"
+                      ItemsSource="{Binding Player2.MiddleBattleRow.BattleRowCards, Source={StaticResource GameContext}}" 
+                      HorizontalAlignment="Center" 
+                      VerticalAlignment="Center"
+                      AllowDrop="True"
+                      Drop="Player2MiddleBattleRow_Drop">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid HorizontalAlignment="Center"
+                                 Columns="{Binding Player2.MiddleBattleRow.CardsCount, Source={StaticResource GameContext}}"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <StaticResource ResourceKey="CardTemplate"/>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <ContentControl x:Name="Player2MiddleBattleRowHornSlot"
+                        Width="108"
+                        Height="106"
+                        Canvas.Top="182"
+                        Canvas.Left="504"
+                        Background="Transparent"
+                        ContentTemplate="{StaticResource CardTemplate}"
+                        Content="{Binding Player2.MiddleBattleRow.HornSlot, Source={StaticResource GameContext}}"/>
+
+            <TextBlock Width="42"
+                   Height="42"
+                   Canvas.Top="213"
+                   Canvas.Left="449"
+                   Background="Transparent"
+                   FontSize="20"
+                   TextAlignment="Center"
+                   Padding="0 6 1 0"
+                   Text="{Binding Player2.MiddleBattleRow.BatteRowScore, Source={StaticResource GameContext}}"/>
+
+            <!-- Player2MeleeBattleRow -->
+            <ItemsControl x:Name="Player2MeleeBattleRow" Width="707" Height="106" Canvas.Left="621" Canvas.Top="300"
+                      Background="Transparent"
+                      ItemsSource="{Binding Player2.MeleeBattleRow.BattleRowCards, Source={StaticResource GameContext}}" 
+                      HorizontalAlignment="Center" 
+                      VerticalAlignment="Center"
+                      AllowDrop="True"
+                      Drop="Player2MeleeBattleRow_Drop">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid HorizontalAlignment="Center"
+                                 Columns="{Binding Player2.MeleeBattleRow.CardsCount, Source={StaticResource GameContext}}"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <StaticResource ResourceKey="CardTemplate"/>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <ContentControl x:Name="Player2MeleeBattleRowHornSlot"
+                        Width="108"
+                        Height="106"
+                        Canvas.Top="300"
+                        Canvas.Left="504"
+                        Background="Transparent"
+                        ContentTemplate="{StaticResource CardTemplate}"
+                        Content="{Binding Player2.MeleeBattleRow.HornSlot, Source={StaticResource GameContext}}"/>
+
+            <TextBlock Width="42"
+                   Height="42"
+                   Canvas.Top="332"
+                   Canvas.Left="449"
+                   Background="Transparent"
+                   FontSize="20"
+                   TextAlignment="Center"
+                   Padding="0 6 1 0"
+                   Text="{Binding Player2.MeleeBattleRow.BatteRowScore, Source={StaticResource GameContext}}"/>
+
+            <!-- GeneralScore -->
+            <TextBlock Width="48"
+           Height="48"
+           Canvas.Top="320"
+           Canvas.Left="373"
+           Background="Transparent"
+           FontSize="24"
+           TextAlignment="Center"
+           Padding="0 6 0 0"
+           Text="{Binding Player2.GeneralScore, Source={StaticResource GameContext}}"/>
+
+            <Border x:Name="Player2Discard"
+                    Width="95" 
+                    Height="125" 
+                    Canvas.Top="118" 
+                    Canvas.Left="1354" 
+                    Background="Transparent" 
+                    MouseLeftButtonDown="Player2Discard_MouseLeftButtonDown">
+                <ContentControl 
+                ContentTemplate="{StaticResource CardTemplate}"
+                Content="{Binding Player2.HigherDiscardCard, Source={StaticResource GameContext}}"/>
+            </Border>
+
+            <Grid x:Name="Player2Deck"
+                  Width="97" 
+                  Height="126"  
+                  Canvas.Top="118" 
+                  Canvas.Left="1498" HorizontalAlignment="Left" VerticalAlignment="Center"
+                  DataContext="{StaticResource GameContext}">
+                <Grid.Background>
+                    <ImageBrush ImageSource="{Binding Player2.DeckName}"/>
+                </Grid.Background>
+                <TextBlock Width="20"
+                           Height="20"
+                           Text="{Binding Player2.Deck.CardsCount, Source={StaticResource GameContext}}"
+                           TextAlignment="Center"
+                           Foreground="White"
+                           FontSize="18"
+                           FontWeight="Bold"
+                           Margin="0 90 0 0"/>
+            </Grid>
+
+            <!-- Player profile -->
+            <TextBlock Canvas.Left="88"
+                       Canvas.Top="296"
+                       Width="150"
+                       Height="50"
+                       TextAlignment="Center"
+                       Padding="5"
+                       Foreground="LightYellow"
+                       FontSize="20"
+                       Text="{Binding Player2.Name, Source={StaticResource GameContext}}"/>
+
+            <Border x:Name="Player2Leader"
+                    Width="95" 
+                    Height="125"  
+                    Canvas.Top="120" 
+                    Canvas.Left="118"  
+                    Background="Transparent">
+                <ContentControl 
+                    ContentTemplate="{StaticResource CardTemplate}"
+                    Content="{Binding Player2.Leader, Source={StaticResource GameContext}}"/>
+            </Border>
+
+            <Path x:Name="Player2FirstCrystal" 
+                  Visibility="{Binding Player2.IsFirstRoundWon, Source={StaticResource GameContext}, 
+                  Converter={StaticResource BooleanToVisibilityConverter}}"
+                  Fill="Black" Opacity="0.75" StrokeThickness="1"
+                  Canvas.Top="358"
+                  Canvas.Left="298"
+                  Data="M 0,0 L 14,6 L 20,20 L 14,34 L 0,40 L -14,34 L -20,20 L -14,6 Z"/>
+
+            <Path x:Name="Player2SecondCrystal" 
+                  Visibility="{Binding Player2.IsSecondRoundWon, Source={StaticResource GameContext}, 
+                  Converter={StaticResource BooleanToVisibilityConverter}}"
+                  Fill="Black" Opacity="0.75" StrokeThickness="1"
+                  Canvas.Top="358"
+                  Canvas.Left="335"
+                  Data="M 0,0 L 14,6 L 20,20 L 14,34 L 0,40 L -14,34 L -20,20 L -14,6 Z"/>
+
+            <!--                               Player1                                              -->
+
+            <!-- Player1MeleeBattleRow -->
+            <ItemsControl x:Name="Player1MeleeBattleRow" Width="707" Height="106" Canvas.Left="621" Canvas.Top="432"
+                      Background="Transparent"
+                      ItemsSource="{Binding Player1.MeleeBattleRow.BattleRowCards, Source={StaticResource GameContext}}"
+                      HorizontalAlignment="Center" 
+                      VerticalAlignment="Center"
+                      AllowDrop="True"
+                      Drop="Player1MeleeBattleRow_Drop">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid HorizontalAlignment="Center"
+                                 Columns="{Binding Player1.MeleeBattleRow.CardsCount, Source={StaticResource GameContext}}"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <StaticResource ResourceKey="CardTemplate"/>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <Border x:Name="Player1MeleeBattleRowHornSlot"
+                Width="108"
+                Height="106"
+                Canvas.Top="432"
+                Canvas.Left="504"
+                Background="Transparent">
+                <ContentControl 
+                        ContentTemplate="{StaticResource CardTemplate}"
+                        Content="{Binding Player1.MeleeBattleRow.HornSlot, Source={StaticResource GameContext}}"
+                        AllowDrop="True"
+                        Drop="Player1MeleeBattleRowHornSlot_Drop"/>
+            </Border>
+
+            <TextBlock Width="42"
+                   Height="42"
+                   Canvas.Top="463"
+                   Canvas.Left="449"
+                   Background="Transparent"
+                   FontSize="20"
+                   TextAlignment="Center"
+                   Padding="0 6 1 0"
+                   Text="{Binding Player1.MeleeBattleRow.BatteRowScore, Source={StaticResource GameContext}}"/>
+
+            <!-- Player1MiddleBattleRow -->
+            <ItemsControl x:Name="Player1MiddleBattleRow" Width="707" Height="106" Canvas.Left="621" Canvas.Top="550"
+                      Background="Transparent"
+                      ItemsSource="{Binding Player1.MiddleBattleRow.BattleRowCards, Source={StaticResource GameContext}}" 
+                      HorizontalAlignment="Center" 
+                      VerticalAlignment="Center"
+                      AllowDrop="True"
+                      Drop="Player1MiddleBattleRow_Drop">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid HorizontalAlignment="Center"
+                                 Columns="{Binding Player1.MiddleBattleRow.CardsCount, Source={StaticResource GameContext}}"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <StaticResource ResourceKey="CardTemplate"/>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <Border x:Name="Player1MiddleBattleRowHornSlot"
+                Width="108"
+                Height="106"
+                Canvas.Top="550"
+                Canvas.Left="504"
+                Background="Transparent">
+                <ContentControl 
+                        ContentTemplate="{StaticResource CardTemplate}"
+                        Content="{Binding Player1.MiddleBattleRow.HornSlot, Source={StaticResource GameContext}}"
+                        AllowDrop="True"
+                        Drop="Player1MiddleBattleRowHornSlot_Drop"/>
+            </Border>
+
+            <TextBlock Width="42"
+                   Height="42"
+                   Canvas.Top="581"
+                   Canvas.Left="449"
+                   Background="Transparent"
+                   FontSize="20"
+                   TextAlignment="Center"
+                   Padding="0 6 1 0"
+                   Text="{Binding Player1.MiddleBattleRow.BatteRowScore, Source={StaticResource GameContext}}"/>
+
+            <!-- Player1SiegeBattleRow -->
+            <ItemsControl x:Name="Player1SiegeBattleRow" Width="707" Height="106" Canvas.Left="621" Canvas.Top="669"
+                      Background="Transparent"
+                      ItemsSource="{Binding Player1.SiegeBattleRow.BattleRowCards, Source={StaticResource GameContext}}" 
+                      HorizontalAlignment="Center" 
+                      VerticalAlignment="Center"
+                      AllowDrop="True"
+                      Drop="Player1SiegeBattleRow_Drop">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid HorizontalAlignment="Center"
+                                 Columns="{Binding Player1.SiegeBattleRow.CardsCount, Source={StaticResource GameContext}}"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <StaticResource ResourceKey="CardTemplate"/>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <Border x:Name="Player1SiegeBattleRowHornSlot"
+                Width="108" 
+                Height="106" 
+                Canvas.Top="669" 
+                Canvas.Left="504" 
+                Background="Transparent">
+                <ContentControl 
+                    ContentTemplate="{StaticResource CardTemplate}"
+                    Content="{Binding Player1.SiegeBattleRow.HornSlot, Source={StaticResource GameContext}}"
+                    AllowDrop="True"
+                    Drop="Player1SiegeBattleRowHornSlot_Drop"/>
+            </Border>
+
+            <TextBlock Width="42"
+           Height="42"
+           Canvas.Top="700"
+           Canvas.Left="449"
+           Background="Transparent"
+           FontSize="20"
+           TextAlignment="Center"
+           Padding="0 6 1 0"
+           Text="{Binding Player1.SiegeBattleRow.BatteRowScore, Source={StaticResource GameContext}}"/>
+
+            <!-- GeneralScore -->
+            <TextBlock Width="48"
+                   Height="48"
+                   Canvas.Top="673"
+                   Canvas.Left="373"
+                   Background="Transparent"
+                   FontSize="24"
+                   TextAlignment="Center"
+                   Padding="0 6 0 0"
+                   Text="{Binding Player1.GeneralScore, Source={StaticResource GameContext}}"/>
+
+            <!-- Hand -->
+            <ItemsControl x:Name="Hand" Width="824" Height="115" Canvas.Left="504" Canvas.Top="789"
+                      Background="Transparent"
+                      ItemsSource="{Binding Player1.Hand.HandCards, Source={StaticResource GameContext}}"
+                      HorizontalAlignment="Center" 
+                      VerticalAlignment="Center">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid HorizontalAlignment="Center"
+                                 Columns="{Binding Player1.Hand.CardsCount, Source={StaticResource GameContext}}"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <StaticResource ResourceKey="CardTemplate"/>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <TextBlock Width="22"
+                   Height="34"
+                   Canvas.Top="658"
+                   Canvas.Left="236"
+                   Background="Transparent"
+                   FontSize="20"
+                   FontWeight="Medium"
+                   Foreground="#b58e43"
+                   TextAlignment="Center"
+                   Padding="0 3 0 0"
+                   Text="{Binding Player1.Hand.CardsCount, Source={StaticResource GameContext}}"/>
+
+            <Button Click="PassButton_Click"
+                Width="100"
+                Height="75" 
+                Canvas.Left="1434" 
+                Canvas.Top="435"
+                Content="Pass"
+                FontSize="20"
+                Background="Transparent"
+                BorderThickness="0"/>
+
+            <Slider Name="volumeSlider" Minimum="0" Maximum="1" Value="0.5"
+                    TickFrequency="0.1" Canvas.Left="1573" Canvas.Top="394"
+                    Orientation="Vertical" Height="160" Width="20" Opacity="0.75"
+                    ToolTip="Change volume of music"
+                    ValueChanged="volumeSlider_ValueChanged"/>
+            <!--  -->
+
+            <ItemsControl x:Name="WeatherCardsBattleRow" Width="244" Height="124" Canvas.Left="124" Canvas.Top="445"
+                      Background="Transparent"
+                      ItemsSource="{Binding WeatherCards, Source={StaticResource GameContext}}"
+                      HorizontalAlignment="Left" 
+                      VerticalAlignment="Center"
+                      AllowDrop="True"
+                      Drop="WeatherCardsBattleRow_Drop">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid HorizontalAlignment="Center"
+                         Columns="3"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <StaticResource ResourceKey="CardTemplate"/>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <Border x:Name="Player1Discard"
+                    Width="95" 
+                    Height="125"  
+                    Canvas.Top="780" 
+                    Canvas.Left="1354"  
+                    Background="Transparent"
+                    MouseLeftButtonDown="Player1Discard_MouseLeftButtonDown">
+                <ContentControl 
+                                ContentTemplate="{StaticResource CardTemplate}"
+                                Content="{Binding Player1.HigherDiscardCard, Source={StaticResource GameContext}}"/>
+            </Border>
+
+            <Grid x:Name="Player1Deck"
+                Width="97" 
+                Height="126"  
+                Canvas.Top="779" 
+                Canvas.Left="1498" HorizontalAlignment="Left" VerticalAlignment="Center"
+                DataContext="{StaticResource GameContext}">
+                <Grid.Background>
+                    <ImageBrush ImageSource="{Binding Player1.DeckName}"/>
+                </Grid.Background>
+                <TextBlock Width="20"
+                       Height="20"
+                       Text="{Binding Player1.Deck.CardsCount, Source={StaticResource GameContext}}"
+                       TextAlignment="Center"
+                       Foreground="White"
+                       FontSize="18"
+                       FontWeight="Bold"
+                       Margin="0 90 0 0"/>
+            </Grid>
+
+            <!-- Player profile -->
+            <TextBlock Canvas.Left="88"
+                       Canvas.Top="704"
+                       Width="150"
+                       Height="50"
+                       TextAlignment="Center"
+                       Padding="5"
+                       Foreground="LightYellow"
+                       FontSize="20"
+                       Text="{Binding Player1.Name, Source={StaticResource GameContext}}"/>
+
+            <Border x:Name="Player1Leader"
+                    Width="95" 
+                    Height="125"  
+                    Canvas.Top="780" 
+                    Canvas.Left="118"  
+                    Background="Transparent"
+                    MouseLeftButtonDown="Player1Leader_MouseLeftButtonDown">
+                <ContentControl 
+                    ContentTemplate="{StaticResource CardTemplate}"
+                    Content="{Binding Player1.Leader, Source={StaticResource GameContext}}"/>
+            </Border>
+
+            <Path x:Name="Player1FirstCrystal" 
+                  Visibility="{Binding Player1.IsFirstRoundWon, Source={StaticResource GameContext}, 
+                  Converter={StaticResource BooleanToVisibilityConverter}}"
+                  Fill="Black" Opacity="0.75" StrokeThickness="1"
+                  Canvas.Top="653"
+                  Canvas.Left="297"
+                  Data="M 0,0 L 14,6 L 20,20 L 14,34 L 0,40 L -14,34 L -20,20 L -14,6 Z"/>
+
+            <Path x:Name="Player1SecondCrystal" 
+                  Visibility="{Binding Player1.IsSecondRoundWon, Source={StaticResource GameContext}, 
+                  Converter={StaticResource BooleanToVisibilityConverter}}"
+                  Fill="Black" Opacity="0.75" StrokeThickness="1"
+                  Canvas.Top="653"
+                  Canvas.Left="334"
+                  Data="M 0,0 L 14,6 L 20,20 L 14,34 L 0,40 L -14,34 L -20,20 L -14,6 Z"/>
+
+            <TextBlock x:Name="AnnouncementBox"
+                       Foreground="#fcfce3"
+                       FontSize="50"
+                       FontWeight="Bold"
+                       TextAlignment="Center"
+                       Padding="15"
+                       Canvas.Top="450"
+                       Width="1680"
+                       Height="100"
+                       Background="Black"
+                       Opacity="0.8"
+                       Visibility="Collapsed"/>
+
+        </Canvas>
+
+        <!-- Menu for pick card -->
+
+        <Grid x:Name="ShowDiscardMenu" Height="1050" Width="1680" 
+              Background="#60000000"
+              Visibility="Collapsed">
+            <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
+                <ItemsControl x:Name="DiscardMenu" Width="680" Height="478" Canvas.Left="621" Canvas.Top="669"
+                  Background="#80000000"
+                  ItemsSource="{Binding Player1.Discard, Source={StaticResource GameContext}}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <StaticResource ResourceKey="CardTemplate"/>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+
+            <Button x:Name="HideDiscard"
+                    Height="100"
+                    Content="HideDiscard"
+                    Background="#80000000"
+                    BorderThickness="0 0 0 0"
+                    FontSize="50"
+                    Foreground="White"
+                    Margin="1351,475,57,475"
+                    Click="HideDiscard_Click"/>
+
+        </Grid>
+
+    </Grid>
+</Window>

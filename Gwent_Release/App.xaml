@@ -1,0 +1,9 @@
+﻿<Application x:Class="Gwent_Release.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Gwent_Release"
+             StartupUri="Views/Menu.xaml">
+    <Application.Resources>
+         
+    </Application.Resources>
+</Application>

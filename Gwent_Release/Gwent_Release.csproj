@@ -1,0 +1,251 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <OutputType>WinExe</OutputType>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <UseWPF>true</UseWPF>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>gwent_logo.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="BGMusic\A Story You Won%27t Believe.mp3" />
+    <None Remove="BGMusic\Back on Path.mp3" />
+    <None Remove="BGMusic\Unreleased Gwent Track.mp3" />
+    <None Remove="Images\Menu_Background.jpg" />
+    <None Remove="JsonLanguages\CardsInfoEN.json" />
+    <None Remove="JsonLanguages\CardsInfoRU.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="BGMusic\A Story You Won't Believe.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="BGMusic\Back on Path.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="BGMusic\Unreleased Gwent Track.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Deck.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Cahir Mawr Dyffryn aep Ceallah.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Dandelion.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Kaedweni Siege Expert 1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Blue Stripes Commando 1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Blue Stripes Commando 2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Blue Stripes Commando 3.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Assire var Anahid.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Avallac%27h.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Ballista 1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Ballista 2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Biting Frost.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Black Infantry Archer 1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Black Infantry Archer 2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Catapult 1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Catapult 2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Cirilla Fiona Elen Riannon.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Clear Weather.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Commander%27s Horn.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Crinfrid Reavers Dragon 1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Crinfrid Reavers Dragon 2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Decoy.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Dun Banner Medic.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Esterad Thyssen.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Etolian Auxiliary Archers%27 1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Etolian Auxiliary Archers%27 2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Fringilla Vigo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Geralt Of Rivia.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Heavy Zerrikanian Fire Scorpion.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Impenetrable Fog.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Impera Brigade Guard 1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Impera Brigade Guard 2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Impera Brigade Guard 3.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Impera Brigade Guard 4.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\John Natalis.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Keira Metz.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Letho of Gulet.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Menno Coehoorn.jpg" />
+    <Resource Include="Images\Menu_Background.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Morvran Voorhis.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Philippa Eilhart.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Prince Stennis.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Scorch.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Shilard Fitz-Oesterlen.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Siege Engineer.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Siege Tower.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Siegfried of Denesle.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Sigismund Dijkstra.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Stefan Skellen.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Thaler.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Tibor Eggebracht.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Torrential Rain.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Trebuchet 1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Trebuchet 2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Triss Merigold.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Vattier de Rideaux.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Vernon Roche.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Ves.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Villentretenmerth.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Yennefer Of Vengerberg.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Young Emissary 1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Young Emissary 2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Zerrikanian Fire Scorpion.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Kaedweni Siege Expert 2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Kaedweni Siege Expert 3.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\NorthKingdomsCover.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\NilfgaardCover.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Emhyr.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Foltest.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="gwent_logo.ico" />
+    <Resource Include="JsonLanguages\CardsInfoEN.json" />
+    <Resource Include="JsonLanguages\CardsInfoRU.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.0" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+    <PackageReference Include="System.IO.Pipelines" Version="9.0.0" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
+    <PackageReference Include="System.Text.Encodings.Web" Version="9.0.0" />
+    <PackageReference Include="System.Text.Json" Version="9.0.0" />
+  </ItemGroup>
+</Project>

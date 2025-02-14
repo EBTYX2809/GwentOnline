@@ -1,0 +1,262 @@
+{
+  "Assire var Anahid": {
+    "Name": "Assire var Anahid",
+    "Description": ""
+  },
+  "Avallac'h": {
+    "Name": "Avallac'h",
+    "Description": "Hero card's score cannot be changed."
+  },
+  "Ballista 1": {
+    "Name": "Balista",
+    "Description": ""
+  },
+  "Ballista 2": {
+    "Name": "Balista",
+    "Description": ""
+  },
+  "Biting Frost": {
+    "Name": "Biting Frost",
+    "Description": "Sets the strength of all Melee Battle Row cards to 1 for both players."
+  },
+  "Black Infantry Archer 1": {
+    "Name": "Black Infantry Archer",
+    "Description": ""
+  },
+  "Black Infantry Archer 2": {
+    "Name": "Black Infantry Archer",
+    "Description": ""
+  },
+  "Blue Stripes Commando 1": {
+    "Name": "Blue Stripes Commando",
+    "Description": "Place next to a card with the same name to double the strength of both cards."
+  },
+  "Blue Stripes Commando 2": {
+    "Name": "Blue Stripes Commando",
+    "Description": "Place next to a card with the same name to double the strength of both cards."
+  },
+  "Blue Stripes Commando 3": {
+    "Name": "Blue Stripes Commando",
+    "Description": "Place next to a card with the same name to double the strength of both cards."
+  },
+  "Cahir Mawr Dyffryn aep Ceallah": {
+    "Name": "Cahir Mawr Dyffryn aep Ceallah",
+    "Description": ""
+  },
+  "Catapult 1": {
+    "Name": "Catapult",
+    "Description": "Place next to a card with the same name to double the strength of both cards."
+  },
+  "Catapult 2": {
+    "Name": "Catapult",
+    "Description": "Place next to a card with the same name to double the strength of both cards."
+  },
+  "Cirilla Fiona Elen Riannon": {
+    "Name": "Cirilla Fiona Elen Riannon",
+    "Description": "Hero card's score cannot be changed."
+  },
+  "Clear Weather": {
+    "Name": "Clear Weather",
+    "Description": "Cancel every weather effect."
+  },
+  "Commander's Horn": {
+    "Name": "Commander's Horn",
+    "Description": "Doubles the strength of all unit cards in that row. Limited to 1 per row."
+  },
+  "Crinfrid Reavers Dragon 1": {
+    "Name": "Crinfrid Reavers Dragon",
+    "Description": "Place next to a card with the same name to double the strength of both cards."
+  },
+  "Crinfrid Reavers Dragon 2": {
+    "Name": "Crinfrid Reavers Dragon",
+    "Description": "Place next to a card with the same name to double the strength of both cards."
+  },
+  "Dandelion": {
+    "Name": "Dandelion",
+    "Description": "Doubles the strength of all unit cards in that row. Limited to 1 per row."
+  },
+  "Decoy": {
+    "Name": "Decoy",
+    "Description": "Swap with a card on the battlefield to return it to your hand."
+  },
+  "Dun Banner Medic": {
+    "Name": "Dun Banner Medic",
+    "Description": "Choose one card from your discard pile and play it instantly (no Heroes or Special Cards)."
+  },
+  "Emhyr": {
+    "Name": "Emhyr",
+    "Description": "Play card from your oponent discard."
+  },
+  "Esterad Thyssen": {
+    "Name": "Esterad Thyssen",
+    "Description": "Hero card's score cannot be changed."
+  },
+  "Etolian Auxiliary Archers' 1": {
+    "Name": "Etolian Auxiliary Archers'",
+    "Description": "Choose one card from your discard pile and play it instantly (no Heroes or Special Cards)."
+  },
+  "Etolian Auxiliary Archers' 2": {
+    "Name": "Etolian Auxiliary Archers'",
+    "Description": "Choose one card from your discard pile and play it instantly (no Heroes or Special Cards)."
+  },
+  "Foltest": {
+    "Name": "Foltest",
+    "Description": "Play card from your deck."
+  },
+  "Fringilla Vigo": {
+    "Name": "Fringilla Vigo",
+    "Description": ""
+  },
+  "Geralt Of Rivia": {
+    "Name": "Geralt Of Rivia",
+    "Description": "Hero card's score cannot be changed."
+  },
+  "Heavy Zerrikanian Fire Scorpion": {
+    "Name": "Heavy Zerrikanian Fire Scorpion",
+    "Description": ""
+  },
+  "Impenetrable Fog": {
+    "Name": "Impenetrable Fog",
+    "Description": "Sets the strength of all Middle Battle Row cards to 1 for both players."
+  },
+  "Impera Brigade Guard 1": {
+    "Name": "Impera Brigade Guard",
+    "Description": "Place next to a card with the same name to double the strength of both cards."
+  },
+  "Impera Brigade Guard 2": {
+    "Name": "Impera Brigade Guard",
+    "Description": "Place next to a card with the same name to double the strength of both cards."
+  },
+  "Impera Brigade Guard 3": {
+    "Name": "Impera Brigade Guard",
+    "Description": "Place next to a card with the same name to double the strength of both cards."
+  },
+  "Impera Brigade Guard 4": {
+    "Name": "Impera Brigade Guard",
+    "Description": "Place next to a card with the same name to double the strength of both cards."
+  },
+  "John Natalis": {
+    "Name": "John Natalis",
+    "Description": "Hero card's score cannot be changed."
+  },
+  "Kaedweni Siege Expert 1": {
+    "Name": "Kaedweni Siege Expert",
+    "Description": "Adds +1 to all units in the row."
+  },
+  "Kaedweni Siege Expert 2": {
+    "Name": "Kaedweni Siege Expert",
+    "Description": "Adds +1 to all units in the row."
+  },
+  "Kaedweni Siege Expert 3": {
+    "Name": "Kaedweni Siege Expert",
+    "Description": "Adds +1 to all units in the row."
+  },
+  "Keira Metz": {
+    "Name": "Keira Metz",
+    "Description": ""
+  },
+  "Letho of Gulet": {
+    "Name": "Letho of Gulet",
+    "Description": "Hero card's score cannot be changed."
+  },
+  "Menno Coehoorn": {
+    "Name": "Menno Coehoorn",
+    "Description": "Hero card's score cannot be changed. Choose one card from your discard pile and play it instantly (no Heroes or Special Cards)."
+  },
+  "Morvran Voorhis": {
+    "Name": "Morvran Voorhis",
+    "Description": "Hero card's score cannot be changed."
+  },
+  "Philippa Eilhart": {
+    "Name": "Philippa Eilhart",
+    "Description": "Hero card's score cannot be changed."
+  },
+  "Prince Stennis": {
+    "Name": "Prince Stennis",
+    "Description": "Place on your opponent's battlefield (counts towards opponent's total) and draw 2 cards from your deck."
+  },
+  "Scorch": {
+    "Name": "Scorch",
+    "Description": "Kills the strongest card(s) on the battlefield."
+  },
+  "Shilard Fitz-Oesterlen": {
+    "Name": "Shilard Fitz-Oesterlen",
+    "Description": "Place on your opponent's battlefield (counts towards opponent's total) and draw 2 cards from your deck."
+  },
+  "Siege Engineer": {
+    "Name": "Siege Engineer",
+    "Description": ""
+  },
+  "Siege Tower": {
+    "Name": "Siege Tower",
+    "Description": ""
+  },
+  "Siegfried of Denesle": {
+    "Name": "Siegfried of Denesle",
+    "Description": ""
+  },
+  "Sigismund Dijkstra": {
+    "Name": "Sigismund Dijkstra",
+    "Description": "Place on your opponent's battlefield (counts towards opponent's total) and draw 2 cards from your deck."
+  },
+  "Stefan Skellen": {
+    "Name": "Stefan Skellen",
+    "Description": "Place on your opponent's battlefield (counts towards opponent's total) and draw 2 cards from your deck."
+  },
+  "Thaler": {
+    "Name": "Thaler",
+    "Description": "Place on your opponent's battlefield (counts towards opponent's total) and draw 2 cards from your deck."
+  },
+  "Tibor Eggebracht": {
+    "Name": "Tibor Eggebracht",
+    "Description": "Hero card's score cannot be changed."
+  },
+  "Torrential Rain": {
+    "Name": "Torrential Rain",
+    "Description": "Sets the strength of all Siege Battle Row cards to 1 for both players."
+  },
+  "Trebuchet 1": {
+    "Name": "Trebuchet",
+    "Description": ""
+  },
+  "Trebuchet 2": {
+    "Name": "Trebuchet",
+    "Description": ""
+  },
+  "Triss Merigold": {
+    "Name": "Triss Merigold",
+    "Description": "Hero card's score cannot be changed."
+  },
+  "Vattier de Rideaux": {
+    "Name": "Vattier de Rideaux",
+    "Description": "Place on your opponent's battlefield (counts towards opponent's total) and draw 2 cards from your deck."
+  },
+  "Vernon Roche": {
+    "Name": "Vernon Roche",
+    "Description": "Hero card's score cannot be changed."
+  },
+  "Ves": {
+    "Name": "Ves",
+    "Description": ""
+  },
+  "Villentretenmerth": {
+    "Name": "Villentretenmerth",
+    "Description": "Kills the strongest card(s) in melee battle row."
+  },
+  "Yennefer Of Vengerberg": {
+    "Name": "Yennefer Of Vengerberg",
+    "Description": "Choose one card from your discard pile and play it instantly (no Heroes or Special Cards)."
+  },
+  "Young Emissary 1": {
+    "Name": "Young Emissary",
+    "Description": "Place next to a card with the same name to double the strength of both cards."
+  },
+  "Young Emissary 2": {
+    "Name": "Young Emissary",
+    "Description": "Place next to a card with the same name to double the strength of both cards."
+  },
+  "Zerrikanian Fire Scorpion": {
+    "Name": "Zerrikanian Fire Scorpion",
+    "Description": ""
+  }
+}
