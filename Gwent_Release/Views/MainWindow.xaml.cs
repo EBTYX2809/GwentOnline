@@ -87,6 +87,22 @@ namespace Gwent_Release.Views
             await Task.Delay(1000);
             AnnouncementBox.Text = null;
             AnnouncementBox.Visibility = Visibility.Collapsed;
+            PlayersTurnMarksVisibilitySwitcher();
+
+        }
+
+        private void PlayersTurnMarksVisibilitySwitcher()
+        {
+            if (GameContext.IsPlayer1Turn)
+            {
+                Player1TurnMark.Visibility = Visibility.Visible;
+                Player2TurnMark.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                Player2TurnMark.Visibility = Visibility.Visible;
+                Player1TurnMark.Visibility = Visibility.Collapsed;
+            }
         }
 
         private async Task StartMuligan(CancellationToken token)

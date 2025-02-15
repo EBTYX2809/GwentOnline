@@ -251,15 +251,28 @@
             </Grid>
 
             <!-- Player profile -->
-            <TextBlock Canvas.Left="88"
+            <TextBlock Canvas.Left="68"
                        Canvas.Top="296"
-                       Width="150"
+                       Width="200"
                        Height="50"
                        TextAlignment="Center"
                        Padding="5"
                        Foreground="LightYellow"
                        FontSize="20"
                        Text="{Binding Player2.Name, Source={StaticResource GameContext}}"/>
+
+            <TextBlock Canvas.Left="270"
+                       Canvas.Top="296"
+                       Width="100"
+                       Height="50"
+                       TextAlignment="Center"
+                       Padding="5"
+                       Foreground="LightYellow"
+                       FontSize="20"
+                       FontWeight="DemiBold"
+                       Text="Passed"
+                       Visibility="{Binding Player2.HasPassed, Source={StaticResource GameContext}, 
+                            Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
             <Border x:Name="Player2Leader"
                     Width="95" 
@@ -271,6 +284,15 @@
                     ContentTemplate="{StaticResource CardTemplate}"
                     Content="{Binding Player2.Leader, Source={StaticResource GameContext}}"/>
             </Border>
+
+            <Ellipse x:Name="Player2TurnMark" 
+                     Canvas.Top="169" 
+                     Canvas.Left="228"
+                     Width="30"
+                     Height="30"
+                     Fill="#c9be44"
+                     Opacity="0.5"
+                     Visibility="Collapsed"/>
 
             <Path x:Name="Player2FirstCrystal" 
                   Visibility="{Binding Player2.IsFirstRoundWon, Source={StaticResource GameContext}, 
@@ -528,15 +550,28 @@
             </Grid>
 
             <!-- Player profile -->
-            <TextBlock Canvas.Left="88"
+            <TextBlock Canvas.Left="68"
                        Canvas.Top="704"
-                       Width="150"
+                       Width="200"
                        Height="50"
                        TextAlignment="Center"
                        Padding="5"
                        Foreground="LightYellow"
                        FontSize="20"
                        Text="{Binding Player1.Name, Source={StaticResource GameContext}}"/>
+
+            <TextBlock Canvas.Left="270"
+                       Canvas.Top="704"
+                       Width="100"
+                       Height="50"
+                       TextAlignment="Center"
+                       Padding="5"
+                       Foreground="LightYellow"
+                       FontSize="20"
+                       FontWeight="DemiBold"
+                       Text="Passed"
+                       Visibility="{Binding Player1.HasPassed, Source={StaticResource GameContext}, 
+                            Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
             <Border x:Name="Player1Leader"
                     Width="95" 
@@ -549,6 +584,15 @@
                     ContentTemplate="{StaticResource CardTemplate}"
                     Content="{Binding Player1.Leader, Source={StaticResource GameContext}}"/>
             </Border>
+
+            <Ellipse x:Name="Player1TurnMark"
+                     Canvas.Top="829" 
+                     Canvas.Left="228"
+                     Width="30"
+                     Height="30"
+                     Fill="#c9be44"
+                     Opacity="0.5"
+                     Visibility="Collapsed"/>
 
             <Path x:Name="Player1FirstCrystal" 
                   Visibility="{Binding Player1.IsFirstRoundWon, Source={StaticResource GameContext}, 

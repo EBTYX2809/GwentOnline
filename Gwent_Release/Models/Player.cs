@@ -192,7 +192,19 @@ namespace Gwent_Release.Models
                 }
             }
         }
-        public bool HasPassed;
+        private bool _hasPassed;
+        public bool HasPassed
+        {
+            get => _hasPassed;
+            set
+            {
+                if (_hasPassed != value)
+                {
+                    _hasPassed = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
         public Player() 
         {
             IsFirstRoundWon = false;
