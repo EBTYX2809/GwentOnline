@@ -11,7 +11,7 @@ namespace Gwent_Release.ViewModels
 {
     public class MenuViewModel : INotifyPropertyChanged
     {
-        private string _playerName => GameContext.Player1.Name;
+        private string _playerName => GameContext.Instance.Player1.Name;
         public string playerName
         {
             get => _playerName;
@@ -19,7 +19,7 @@ namespace Gwent_Release.ViewModels
             {
                 if (_playerName != value)
                 {
-                    GameContext.Player1.Name = value;
+                    GameContext.Instance.Player1.Name = value;
                     OnPropertyChanged();
                     isPlaceholderVisible = string.IsNullOrEmpty(_playerName);                    
                 }
@@ -136,7 +136,7 @@ namespace Gwent_Release.ViewModels
             {
                 Client client = new Client();
 
-                client.Connect("35.243.225.97", 10000); // 127.0.0.1
+                client.Connect("35.243.225.97", 10000); // 127.0.0.1 
 
                 isMenuVisible = false;
 
@@ -163,8 +163,8 @@ namespace Gwent_Release.ViewModels
 
         private void PickFraction(object parameter)
         {
-            if (!pickFractionToggleButton) GameContext.Player1.fraction = Fractions.NorthKingdoms;
-            else GameContext.Player1.fraction = Fractions.Nilfgaard;
+            if (!pickFractionToggleButton) GameContext.Instance.Player1.fraction = Fractions.NorthKingdoms;
+            else GameContext.Instance.Player1.fraction = Fractions.Nilfgaard;
         }
 
         private void SetLanguage(object parameter)

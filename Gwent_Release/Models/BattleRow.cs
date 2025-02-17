@@ -94,7 +94,7 @@ namespace Gwent_Release.Models
                     ScoringPointsInRow();
                     CardAddedToBattleRow?.Invoke();
 
-                    GameContext.StartTurn(card);
+                    GameContext.Instance.StartTurn(card);
 
                     return;
                 }
@@ -104,14 +104,14 @@ namespace Gwent_Release.Models
                     TurnManager.PlayedCards.Add(card);
 
                     UnitCard recievedCard = await GiveMedicCardToContext?.Invoke(
-                        GameContext.ActivePlayer.Discard.Where(_card => _card is UnitCard).ToList()); 
+                        GameContext.Instance.ActivePlayer.Discard.Where(_card => _card is UnitCard).ToList()); 
 
                     card.Effect.ActivateEffect(recievedCard);
 
                     ScoringPointsInRow();
                     CardAddedToBattleRow?.Invoke();
 
-                    if (recievedCard == null) GameContext.StartTurn(card);
+                    if (recievedCard == null) GameContext.Instance.StartTurn(card);
 
                     return;
                 }
@@ -128,7 +128,7 @@ namespace Gwent_Release.Models
                         CardAddedToBattleRow?.Invoke();  
                         
                         TurnManager.PlayedCards.Add(card);                        
-                        GameContext.StartTurn(card);
+                        GameContext.Instance.StartTurn(card);
 
                         return;
                     }
@@ -165,7 +165,7 @@ namespace Gwent_Release.Models
                 CardAddedToBattleRow?.Invoke();  
                 
                 TurnManager.PlayedCards.Add(card);                
-                GameContext.StartTurn(card);               
+                GameContext.Instance.StartTurn(card);               
 
                 return;
             }
@@ -193,7 +193,7 @@ namespace Gwent_Release.Models
             CardAddedToBattleRow?.Invoke();
             
             TurnManager.PlayedCards.Add(card);            
-            GameContext.StartTurn(card);            
+            GameContext.Instance.StartTurn(card);            
         }
 
         public void RemoveCardFromBattleRow(Card card)
