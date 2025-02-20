@@ -1,4 +1,4 @@
-﻿namespace Gwent_Release.Models
+﻿namespace Gwent_Release.Models.CardsNS
 {
     public class WeatherCard : Card
     {
@@ -6,9 +6,9 @@
         public BattleRows ActionBattleRow { get; set; }
 
         public WeatherCard(string jsonNameKey, BattleRows dropBattleRow, BattleRows actionBattleRow = 0,
-            int? actualCardScore = null, Fractions fraction = 0, BattleRows battleRow = 0) 
-            : base(jsonNameKey, actualCardScore, fraction, battleRow)        
-        { 
+            int? actualCardScore = null, Fractions fraction = 0, BattleRows battleRow = 0)
+            : base(jsonNameKey, actualCardScore, fraction, battleRow)
+        {
             DropBattleRow = dropBattleRow;
             ActionBattleRow = actionBattleRow;
         }
@@ -18,7 +18,7 @@
             {
                 Effect = Effect,
                 CardInfo = CardInfo
-            }; 
+            };
         }
     }
 }

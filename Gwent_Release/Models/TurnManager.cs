@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Gwent_Release.Models.CardsNS;
+using Gwent_Release.Models.EffectsNS;
 
 namespace Gwent_Release.Models
 {

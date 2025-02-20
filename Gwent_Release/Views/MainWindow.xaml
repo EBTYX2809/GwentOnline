@@ -305,7 +305,7 @@
             </Ellipse>                     
 
             <Path x:Name="Player2FirstCrystal" 
-                  Visibility="{Binding Player2.IsFirstRoundWon, Source={x:Static model:GameContext.Instance}, 
+                  Visibility="{Binding Player2.IsFirstRoundLoose, Source={x:Static model:GameContext.Instance}, 
                   Converter={StaticResource BooleanToVisibilityConverter}}"
                   Fill="Black" Opacity="0.75" StrokeThickness="1"
                   Canvas.Top="358"
@@ -313,7 +313,7 @@
                   Data="M 0,0 L 14,6 L 20,20 L 14,34 L 0,40 L -14,34 L -20,20 L -14,6 Z"/>
 
             <Path x:Name="Player2SecondCrystal" 
-                  Visibility="{Binding Player2.IsSecondRoundWon, Source={x:Static model:GameContext.Instance}, 
+                  Visibility="{Binding Player2.IsSecondRoundLoose, Source={x:Static model:GameContext.Instance}, 
                   Converter={StaticResource BooleanToVisibilityConverter}}"
                   Fill="Black" Opacity="0.75" StrokeThickness="1"
                   Canvas.Top="358"
@@ -606,7 +606,7 @@
 Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
             <Path x:Name="Player1FirstCrystal" 
-                  Visibility="{Binding Player1.IsFirstRoundWon, Source={x:Static model:GameContext.Instance}, 
+                  Visibility="{Binding Player1.IsFirstRoundLoose, Source={x:Static model:GameContext.Instance}, 
                   Converter={StaticResource BooleanToVisibilityConverter}}"
                   Fill="Black" Opacity="0.75" StrokeThickness="1"
                   Canvas.Top="653"
@@ -614,7 +614,7 @@ Converter={StaticResource BooleanToVisibilityConverter}}"/>
                   Data="M 0,0 L 14,6 L 20,20 L 14,34 L 0,40 L -14,34 L -20,20 L -14,6 Z"/>
 
             <Path x:Name="Player1SecondCrystal" 
-                  Visibility="{Binding Player1.IsSecondRoundWon, Source={x:Static model:GameContext.Instance}, 
+                  Visibility="{Binding Player1.IsSecondRoundLoose, Source={x:Static model:GameContext.Instance}, 
                   Converter={StaticResource BooleanToVisibilityConverter}}"
                   Fill="Black" Opacity="0.75" StrokeThickness="1"
                   Canvas.Top="653"

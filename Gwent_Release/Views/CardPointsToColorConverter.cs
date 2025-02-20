@@ -1,4 +1,4 @@
-﻿using Gwent_Release.Models;
+﻿using Gwent_Release.Models.CardsNS;
 using System;
 using System.Globalization;
 using System.Windows.Data;

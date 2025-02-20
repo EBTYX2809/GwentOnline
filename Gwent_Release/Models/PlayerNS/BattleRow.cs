@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Gwent_Release.Models.CardsNS;
 
 namespace Gwent_Release.Models
 {

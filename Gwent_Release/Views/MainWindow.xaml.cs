@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
 using Gwent_Release.Models;
+using Gwent_Release.Models.CardsNS;
 
 namespace Gwent_Release.Views
 {

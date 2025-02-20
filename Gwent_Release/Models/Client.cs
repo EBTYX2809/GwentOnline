@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Gwent_Release.Models.CardsNS;
 
 namespace Gwent_Release.Models
 {

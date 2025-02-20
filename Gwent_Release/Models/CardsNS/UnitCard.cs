@@ -1,4 +1,4 @@
-﻿namespace Gwent_Release.Models
+﻿namespace Gwent_Release.Models.CardsNS
 {
     public class UnitCard : Card
     {

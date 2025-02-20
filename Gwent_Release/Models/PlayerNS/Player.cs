@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using Gwent_Release.Models.CardsNS;
 
 namespace Gwent_Release.Models
 {
@@ -166,28 +167,28 @@ namespace Gwent_Release.Models
                 }
             }
         }
-        private bool _isFirstRoundWon;
-        public bool IsFirstRoundWon
+        private bool _isFirstRoundLoose;
+        public bool IsFirstRoundLoose
         {
-            get => _isFirstRoundWon;
+            get => _isFirstRoundLoose;
             set
             {
-                if (value != _isFirstRoundWon)
+                if (value != _isFirstRoundLoose)
                 {
-                    _isFirstRoundWon = value;
+                    _isFirstRoundLoose = value;
                     OnPropertyChanged();
                 }
             }
         }
-        private bool _isSecondRoundWon;
-        public bool IsSecondRoundWon
+        private bool _isSecondRoundLoose;
+        public bool IsSecondRoundLoose
         {
-            get => _isSecondRoundWon;
+            get => _isSecondRoundLoose;
             set
             {
-                if (value != _isSecondRoundWon)
+                if (value != _isSecondRoundLoose)
                 {
-                    _isSecondRoundWon = value;
+                    _isSecondRoundLoose = value;
                     OnPropertyChanged();
                 }
             }
@@ -207,8 +208,8 @@ namespace Gwent_Release.Models
         }
         public Player() 
         {
-            IsFirstRoundWon = false;
-            IsSecondRoundWon = false;
+            IsFirstRoundLoose = false;
+            IsSecondRoundLoose = false;
             HasPassed = false;
             Deck = new Deck ();
             Hand = new Hand ();

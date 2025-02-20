@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Gwent_Release.Views;
 using Gwent_Release.Models;
+using Gwent_Release.Models.CardsNS;
 
 namespace Gwent_Release.ViewModels
 {

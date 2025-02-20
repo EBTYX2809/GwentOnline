@@ -1,4 +1,5 @@
 ﻿using Gwent_Release.Views;
+using Gwent_Release.Models.RoundWinnerManagerNS;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,14 +9,15 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
+using Gwent_Release.Models.CardsNS;
 
 namespace Gwent_Release.Models
 {
-    public class GameContext : INotifyPropertyChanged
+    public class GameContext : RoundWinnerManager, INotifyPropertyChanged
     {
-        private static GameContext _instance = new GameContext(); //
+        private static GameContext _instance = new GameContext();
 
-        public static GameContext Instance => _instance; //
+        public static GameContext Instance => _instance;
 
         private Player _player1;
         public Player Player1
@@ -74,10 +76,11 @@ namespace Gwent_Release.Models
                 }
             }
         }
-        
+
+        private RoundWinner roundWinner = new RoundWinner();
+
         public Action NewWeatherAdded { get; set; }
-        public Func<string, Task> TurnAnnouncement { get; set; }
-        public List<string> RoundWinners = new List<string>();
+        public Func<string, Task> TurnAnnouncement { get; set; }        
         private GameContext()
         {
             Player1 = new Player();
@@ -112,12 +115,6 @@ namespace Gwent_Release.Models
                 ActivePlayer = Player2;
                 PassivePlayer = Player1;
             }
-        }
-
-        private void EndRoundAnnouncement(string announcement)
-        {
-            TurnAnnouncement?.Invoke(announcement);
-            RoundWinners.Add(announcement);
         }
 
         public void StartTurn(Card card)
@@ -174,56 +171,23 @@ namespace Gwent_Release.Models
 
         private void EndRound()
         {
-            // Bullshit
             if (Player1.GeneralScore > Player2.GeneralScore)
             {
-                if (!Player2.IsFirstRoundWon) Player2.IsFirstRoundWon = true;
-                else Player2.IsSecondRoundWon = true;
-
-                EndRoundAnnouncement($"{Player1.Name} win round. Score {Player1.GeneralScore} - {Player2.GeneralScore}.");
-
-                if (Player1.Leader.Fraction == Fractions.NorthKingdoms) Player1.TakeCard(1);
+                roundWinner.SetWinner(new Player1WinRound());
+                roundWinner.WinRound();
             }
             else if (Player2.GeneralScore > Player1.GeneralScore)
             {
-                if (!Player1.IsFirstRoundWon) Player1.IsFirstRoundWon = true;
-                else Player1.IsSecondRoundWon = true;
-
-                EndRoundAnnouncement($"{Player2.Name} win round. Score {Player2.GeneralScore} - {Player1.GeneralScore}.");
-
-                if (Player2.Leader.Fraction == Fractions.NorthKingdoms) Player2.TakeCard(1);
+                roundWinner.SetWinner(new Player2WinRound());
+                roundWinner.WinRound();
             }
             else if (Player1.GeneralScore == Player2.GeneralScore)
             {
-                if (Player1.Leader.Fraction == Fractions.Nilfgaard && Player2.Leader.Fraction == Fractions.Nilfgaard
-                    || Player1.Leader.Fraction == Fractions.NorthKingdoms && Player2.Leader.Fraction == Fractions.NorthKingdoms)
-                {
-                    if (!Player1.IsFirstRoundWon) Player1.IsFirstRoundWon = true;
-                    else Player1.IsSecondRoundWon = true;
-                    if (!Player2.IsFirstRoundWon) Player2.IsFirstRoundWon = true;
-                    else Player2.IsSecondRoundWon = true;
-
-                    EndRoundAnnouncement($"Draw in round. Score {Player1.GeneralScore} - {Player2.GeneralScore}.");
-                }
-                else if (Player1.Leader.Fraction == Fractions.Nilfgaard)
-                {
-                    if (!Player2.IsFirstRoundWon) Player2.IsFirstRoundWon = true;
-                    else Player2.IsSecondRoundWon = true;
-
-                    EndRoundAnnouncement($"{Player1.Name} win round by his fraction ability. " +
-                                         $"Score {Player1.GeneralScore} - {Player2.GeneralScore}.");
-                }
-                else if (Player2.Leader.Fraction == Fractions.Nilfgaard)
-                {
-                    if (!Player1.IsFirstRoundWon) Player1.IsFirstRoundWon = true;
-                    else Player1.IsSecondRoundWon = true;
-
-                    EndRoundAnnouncement($"{Player2.Name} win round by his fraction ability. " +
-                                         $"Score {Player2.GeneralScore} - {Player1.GeneralScore}.");
-                }
+                roundWinner.SetWinner(new DrawInRound());
+                roundWinner.WinRound();
             }
 
-            if (Player1.IsSecondRoundWon || Player2.IsSecondRoundWon)
+            if (Player1.IsSecondRoundLoose || Player2.IsSecondRoundLoose)
             {
                 string gameInfo = "GG\n";
                 foreach (var round in RoundWinners)
@@ -279,16 +243,6 @@ namespace Gwent_Release.Models
             _instance.Player1.Name = name;
         }
 
-        /*private void RestartGameContext()
-        {
-            string name = Player1.Name;
-            Player1 = new Player() { Name = name };
-            Player2 = new Player();
-            ActivePlayer = Player1;
-            PassivePlayer = Player2;
-            WeatherCardsBattleRow.Clear();
-        }*/
-
         public void ReturnToMenuWindow(Client client)
         {
             Window currentWindow = Application.Current.MainWindow;
@@ -297,7 +251,7 @@ namespace Gwent_Release.Models
             Application.Current.MainWindow = menuWindow;
             menuWindow.Show();
 
-            RestartGameContext(); //
+            RestartGameContext();
 
             MessageBox.Show("Returning to the menu.");
 
