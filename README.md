@@ -2,6 +2,8 @@ Link for download: https://drive.google.com/file/d/1RDEZvOyWGj-2NHwLgm3KtXkLi12Y
 
 Unzip folder, and run exe file to start app.
 
+Link to server: https://github.com/EBTYX2809/ServerForGwent
+
 ![Menu screenshot](https://github.com/EBTYX2809/GwentOnline/blob/master/GwentMenu.jpg) 
 
 Implied that you will be playing against a friend or acquaintance, because online such a project is obviously about zero, so if you really want to play, call someone and at the same time launch the game + - (after a minute of searching, the session closes). You can recognize each other by name.
