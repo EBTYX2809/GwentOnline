@@ -10,6 +10,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using Gwent_Release.Models.CardsNS;
+using Gwent_Release.Models.PlayerNS;
 
 namespace Gwent_Release.Models
 {

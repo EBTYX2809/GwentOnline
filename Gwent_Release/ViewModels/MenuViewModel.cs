@@ -22,7 +22,7 @@ namespace Gwent_Release.ViewModels
                 {
                     GameContext.Instance.Player1.Name = value;
                     OnPropertyChanged();
-                    isPlaceholderVisible = string.IsNullOrEmpty(_playerName);                    
+                    isPlaceholderVisible = string.IsNullOrEmpty(_playerName);
                 }
             }
         }
@@ -112,7 +112,7 @@ namespace Gwent_Release.ViewModels
         }
 
         public ICommand PlayCommand { get; }
-        public ICommand PickFractionCommand { get; }        
+        public ICommand PickFractionCommand { get; }
         public ICommand SetLanguageCommand { get; }
 
         public MenuViewModel()
@@ -137,7 +137,7 @@ namespace Gwent_Release.ViewModels
             {
                 Client client = new Client();
 
-                client.Connect("35.243.225.97", 10000); // 127.0.0.1 
+                client.Connect("35.229.67.170", 10000); // 127.0.0.1 // 35.229.67.170
 
                 isMenuVisible = false;
 
@@ -145,7 +145,7 @@ namespace Gwent_Release.ViewModels
 
                 isMenuVisible = true;
 
-                if(isConnected)
+                if (isConnected)
                 {
                     Window currentWindow = Application.Current.MainWindow;
 

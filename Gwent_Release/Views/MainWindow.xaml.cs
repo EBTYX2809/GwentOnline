@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Effects;
 using Gwent_Release.Models;
 using Gwent_Release.Models.CardsNS;
+using Gwent_Release.Models.EffectsNS;
 
 namespace Gwent_Release.Views
 {
