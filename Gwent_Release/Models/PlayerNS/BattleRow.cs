@@ -6,8 +6,10 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Gwent_Release.Models.CardsNS;
+using Gwent_Release.Models.EffectsNS;
 
-namespace Gwent_Release.Models
+namespace Gwent_Release.Models.PlayerNS
 {
     public class BattleRow : INotifyPropertyChanged
     {
@@ -46,7 +48,7 @@ namespace Gwent_Release.Models
             get => _hornSlot;
             set
             {
-                if (_hornSlot!= value)
+                if (_hornSlot != value)
                 {
                     _hornSlot = value;
                     OnPropertyChanged();
@@ -71,9 +73,9 @@ namespace Gwent_Release.Models
 
         public async void AddCardToBattleRow(Card card, UnitCard cardForRevive = null)
         {
-            if(card.Effect == EffectModifiersStore.Medic)
+            if (card.Effect == EffectModifiersStore.Medic)
             {
-                if(cardForRevive != null)
+                if (cardForRevive != null)
                 {
                     BattleRowCards.Add(card);
 
@@ -87,31 +89,31 @@ namespace Gwent_Release.Models
 
                     return;
                 }
-                else if(card == cardForRevive)
+                else if (card == cardForRevive)
                 {
                     BattleRowCards.Add(card);
 
                     ScoringPointsInRow();
                     CardAddedToBattleRow?.Invoke();
 
-                    GameContext.StartTurn(card);
+                    GameContext.Instance.StartTurn(card);
 
                     return;
                 }
-                else 
+                else
                 {
                     BattleRowCards.Add(card);
                     TurnManager.PlayedCards.Add(card);
 
                     UnitCard recievedCard = await GiveMedicCardToContext?.Invoke(
-                        GameContext.ActivePlayer.Discard.Where(_card => _card is UnitCard).ToList()); 
+                        GameContext.Instance.ActivePlayer.Discard.Where(_card => _card is UnitCard).ToList());
 
                     card.Effect.ActivateEffect(recievedCard);
 
                     ScoringPointsInRow();
                     CardAddedToBattleRow?.Invoke();
 
-                    if (recievedCard == null) GameContext.StartTurn(card);
+                    if (recievedCard == null) GameContext.Instance.StartTurn(card);
 
                     return;
                 }
@@ -121,14 +123,14 @@ namespace Gwent_Release.Models
                 int index = 0;
                 foreach (var dublicateCard in BattleRowCards)
                 {
-                    if(card.JsonNameKey.TrimEnd('1', '2', '3', '4') == dublicateCard.JsonNameKey.TrimEnd('1', '2', '3', '4'))
+                    if (card.JsonNameKey.TrimEnd('1', '2', '3', '4') == dublicateCard.JsonNameKey.TrimEnd('1', '2', '3', '4'))
                     {
                         BattleRowCards.Insert(index + 1, card);
                         AddEffectModifier(card.Effect as EffectModifier);
-                        CardAddedToBattleRow?.Invoke();  
-                        
-                        TurnManager.PlayedCards.Add(card);                        
-                        GameContext.StartTurn(card);
+                        CardAddedToBattleRow?.Invoke();
+
+                        TurnManager.PlayedCards.Add(card);
+                        GameContext.Instance.StartTurn(card);
 
                         return;
                     }
@@ -137,14 +139,14 @@ namespace Gwent_Release.Models
                 BattleRowCards.Add(card);
             }
 
-            else if(card.Effect == EffectModifiersStore.Horn)
+            else if (card.Effect == EffectModifiersStore.Horn)
             {
                 if (card is ActionCard)
                 {
                     if (HornSlot == null)
                     {
                         HornSlot = card;
-                        AddEffectModifier(card.Effect as EffectModifier);                        
+                        AddEffectModifier(card.Effect as EffectModifier);
                         TurnManager.HornRow = (int)BattleRowType;
                     }
                 }
@@ -156,16 +158,16 @@ namespace Gwent_Release.Models
                         AddEffectModifier(card.Effect as EffectModifier);
                         HornSlot = CardsStore.NeutralDeck.Find(_card => _card.JsonNameKey == "Commander's Horn");
                     }
-                    else if(HornSlot != null)
+                    else if (HornSlot != null)
                     {
                         BattleRowCards.Add(card);
                         ScoringPointsInRow();
                     }
                 }
-                CardAddedToBattleRow?.Invoke();  
-                
-                TurnManager.PlayedCards.Add(card);                
-                GameContext.StartTurn(card);               
+                CardAddedToBattleRow?.Invoke();
+
+                TurnManager.PlayedCards.Add(card);
+                GameContext.Instance.StartTurn(card);
 
                 return;
             }
@@ -180,20 +182,20 @@ namespace Gwent_Release.Models
                 {
                     AddEffectModifier(effectModifier);
                 }
-                else if(card.Effect is Effect effect)
+                else if (card.Effect is Effect effect)
                 {
                     card.Effect.ActivateEffect(null);
                 }
             }
-            else if(card is UnitCard unitCard)
+            else if (card is UnitCard unitCard)
             {
                 ScoringPointsInCard(unitCard);
             }
             ScoringPointsInRow();
             CardAddedToBattleRow?.Invoke();
-            
-            TurnManager.PlayedCards.Add(card);            
-            GameContext.StartTurn(card);            
+
+            TurnManager.PlayedCards.Add(card);
+            GameContext.Instance.StartTurn(card);
         }
 
         public void RemoveCardFromBattleRow(Card card)
@@ -229,10 +231,10 @@ namespace Gwent_Release.Models
         }
 
         public void AddEffectModifier(EffectModifier effect)
-        {           
+        {
             EffectModifiers.Add(effect);
 
-            EffectModifiers = EffectModifiers.OrderBy(effectModifier => effectModifier.Priority).ToList();            
+            EffectModifiers = EffectModifiers.OrderBy(effectModifier => effectModifier.Priority).ToList();
 
             ScoringPointsInRow();
 
@@ -267,7 +269,7 @@ namespace Gwent_Release.Models
             BatteRowScore = 0;
             foreach (var card in BattleRowCards)
             {
-                if(card is UnitCard unit)
+                if (card is UnitCard unit)
                 {
                     ScoringPointsInCard(unit);
                     BatteRowScore += (int)unit.ActualCardScore;
@@ -285,7 +287,7 @@ namespace Gwent_Release.Models
             BatteRowScore = 0;
             foreach (var card in BattleRowCards)
             {
-                if (card is UnitCard unit) 
+                if (card is UnitCard unit)
                 {
                     unit.ActualCardScore = unit.DefaultCardScore;
                 }
@@ -294,7 +296,7 @@ namespace Gwent_Release.Models
             HornSlot = null;
             BattleRowCards.Clear();
             EffectModifiers.Clear();
-        }        
+        }
 
         private void BattleRowCards_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {

@@ -2,36 +2,37 @@
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Gwent_Release.Models.CardsNS;
 
-namespace Gwent_Release.Models
+namespace Gwent_Release.Models.PlayerNS
 {
-    public class Hand : INotifyPropertyChanged
-    {        
-        private ObservableCollection<Card> _handCards;
-        public ObservableCollection<Card> HandCards
+    public class Deck : INotifyPropertyChanged
+    {
+        private ObservableCollection<Card> _deckCards;
+        public ObservableCollection<Card> DeckCards
         {
-            get => _handCards;
+            get => _deckCards;
             set
             {
-                if (_handCards != value)
+                if (_deckCards != value)
                 {
-                    _handCards = value;
+                    _deckCards = value;
                     OnPropertyChanged();
                 }
             }
         }
 
-        public int CardsCount => HandCards.Count;
+        public int CardsCount => DeckCards.Count;
 
-        private void HandCards_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void DeckCards_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             OnPropertyChanged(nameof(CardsCount));
         }
 
-        public Hand()
+        public Deck()
         {
-            HandCards = new ObservableCollection<Card>();
-            HandCards.CollectionChanged += HandCards_CollectionChanged;
+            DeckCards = new ObservableCollection<Card>();
+            DeckCards.CollectionChanged += DeckCards_CollectionChanged;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

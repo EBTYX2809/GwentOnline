@@ -6,8 +6,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using Gwent_Release.Models.CardsNS;
 
-namespace Gwent_Release.Models
+namespace Gwent_Release.Models.PlayerNS
 {
     public class Player : INotifyPropertyChanged
     {
@@ -17,15 +18,15 @@ namespace Gwent_Release.Models
         public string Name
         {
             get => _name;
-            set 
+            set
             {
-                if (_name != value) 
+                if (_name != value)
                 {
                     _name = value;
                     OnPropertyChanged();
                 }
             }
-        }            
+        }
         public string _deckName;
         public string DeckName
         {
@@ -43,9 +44,9 @@ namespace Gwent_Release.Models
         public int GeneralScore
         {
             get => _generalScore;
-            set 
+            set
             {
-                if(_generalScore != value)
+                if (_generalScore != value)
                 {
                     _generalScore = value;
                     OnPropertyChanged();
@@ -71,7 +72,7 @@ namespace Gwent_Release.Models
             get => _hand;
             set
             {
-                if (_hand != value) 
+                if (_hand != value)
                 {
                     _hand = value;
                     OnPropertyChanged();
@@ -118,9 +119,9 @@ namespace Gwent_Release.Models
         public BattleRow MeleeBattleRow
         {
             get => _meleeBattleRow;
-            set 
+            set
             {
-                if (_meleeBattleRow != value) 
+                if (_meleeBattleRow != value)
                 {
                     _meleeBattleRow = value;
                     OnPropertyChanged();
@@ -157,37 +158,37 @@ namespace Gwent_Release.Models
         public ActionCard Leader
         {
             get => _leader;
-            set 
+            set
             {
-                if(_leader != value)
+                if (_leader != value)
                 {
                     _leader = value;
                     OnPropertyChanged();
                 }
             }
         }
-        private bool _isFirstRoundWon;
-        public bool IsFirstRoundWon
+        private bool _isFirstRoundLoose;
+        public bool IsFirstRoundLoose
         {
-            get => _isFirstRoundWon;
+            get => _isFirstRoundLoose;
             set
             {
-                if (value != _isFirstRoundWon)
+                if (value != _isFirstRoundLoose)
                 {
-                    _isFirstRoundWon = value;
+                    _isFirstRoundLoose = value;
                     OnPropertyChanged();
                 }
             }
         }
-        private bool _isSecondRoundWon;
-        public bool IsSecondRoundWon
+        private bool _isSecondRoundLoose;
+        public bool IsSecondRoundLoose
         {
-            get => _isSecondRoundWon;
+            get => _isSecondRoundLoose;
             set
             {
-                if (value != _isSecondRoundWon)
+                if (value != _isSecondRoundLoose)
                 {
-                    _isSecondRoundWon = value;
+                    _isSecondRoundLoose = value;
                     OnPropertyChanged();
                 }
             }
@@ -205,15 +206,15 @@ namespace Gwent_Release.Models
                 }
             }
         }
-        public Player() 
+        public Player()
         {
-            IsFirstRoundWon = false;
-            IsSecondRoundWon = false;
+            IsFirstRoundLoose = false;
+            IsSecondRoundLoose = false;
             HasPassed = false;
-            Deck = new Deck ();
-            Hand = new Hand ();
+            Deck = new Deck();
+            Hand = new Hand();
             fraction = Fractions.NorthKingdoms;
-            Discard = new ObservableCollection<Card> ();
+            Discard = new ObservableCollection<Card>();
             MeleeBattleRow = new BattleRow(BattleRows.MeleeBattleRow);
             MiddleBattleRow = new BattleRow(BattleRows.MiddleBattleRow);
             SiegeBattleRow = new BattleRow(BattleRows.SiegeBattleRow);
@@ -229,7 +230,7 @@ namespace Gwent_Release.Models
             {
                 row.CardRemovedFromBattleRow += MoveCardToDiscard;
             }
-        }        
+        }
 
         public void ScoringGeneralScore()
         {
@@ -251,7 +252,7 @@ namespace Gwent_Release.Models
             var copiedCards = CardsStore.NeutralDeck.Select(c => c.CopyCard()).ToList();
 
             foreach (var card in copiedCards)
-            {               
+            {
                 Deck.DeckCards.Add(card);
             }
 
@@ -260,10 +261,10 @@ namespace Gwent_Release.Models
                 copiedCards = CardsStore.NorthKingdomsDeck.Select(c => c.CopyCard()).ToList();
                 foreach (var card in copiedCards)
                 {
-                    Deck.DeckCards.Add(card); 
+                    Deck.DeckCards.Add(card);
                 }
             }
-            else if(fraction == Fractions.Nilfgaard)
+            else if (fraction == Fractions.Nilfgaard)
             {
                 copiedCards = CardsStore.NilfgaardDeck.Select(c => c.CopyCard()).ToList();
                 foreach (var card in copiedCards)

@@ -1,6 +1,7 @@
 ﻿using System;
+using Gwent_Release.Models.CardsNS;
 
-namespace Gwent_Release.Models
+namespace Gwent_Release.Models.EffectsNS
 {
     public class Effect
     {

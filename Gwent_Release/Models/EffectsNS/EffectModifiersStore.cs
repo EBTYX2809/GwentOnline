@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Gwent_Release.Models.CardsNS;
 
-namespace Gwent_Release.Models
+namespace Gwent_Release.Models.EffectsNS
 {
     public static class EffectModifiersStore
     {
@@ -28,9 +29,9 @@ namespace Gwent_Release.Models
             Bond.Priority = 1;
             Bond.Modifier = context =>
             {
-               foreach(var battleRow in GameContext.ActivePlayer.PlayerBattleRows)
-               {
-                    if(context.Effect == Bond && context.BattleRow == battleRow.BattleRowType)
+                foreach (var battleRow in GameContext.Instance.ActivePlayer.PlayerBattleRows)
+                {
+                    if (context.Effect == Bond && context.BattleRow == battleRow.BattleRowType)
                     {
                         if (battleRow.BattleRowCards.Count(
                                 dublicateCard => dublicateCard.JsonNameKey.TrimEnd('1', '2', '3', '4')
@@ -44,62 +45,62 @@ namespace Gwent_Release.Models
                             else
                             {
                                 context.ActualCardScore = context.DefaultCardScore;
-                            }                            
+                            }
 
                             context.ActualCardScore *= dublicatesCount;
                         }
                     }
-               }
+                }
             };
 
             Horn.Priority = 3;
             Horn.Modifier = context =>
-            {                                
-                context.ActualCardScore *= 2;                
+            {
+                context.ActualCardScore *= 2;
             };
 
             Frost.Priority = 0;
             Frost.Modifier = context =>
-            {                                
-                context.ActualCardScore = 1;                
+            {
+                context.ActualCardScore = 1;
             };
 
             Fog.Priority = 0;
             Fog.Modifier = context =>
-            {                                
-                context.ActualCardScore = 1;                
+            {
+                context.ActualCardScore = 1;
             };
 
             Rain.Priority = 0;
             Rain.Modifier = context =>
-            {                                
-                context.ActualCardScore = 1;                
+            {
+                context.ActualCardScore = 1;
             };
 
             Buff.Priority = 2;
             Buff.Modifier = context =>
-            {                                
-                context.ActualCardScore++;                
+            {
+                context.ActualCardScore++;
             };
 
             ClearWeather.Modifier = context =>
             {
-                foreach (var weatherCard in GameContext.WeatherCardsBattleRow)
+                foreach (var weatherCard in GameContext.Instance.WeatherCardsBattleRow)
                 {
-                    foreach (var battleRow in GameContext.GetAllPlayersRows())
+                    foreach (var battleRow in GameContext.Instance.GetAllPlayersRows())
                     {
                         battleRow.RemoveEffectModifier(weatherCard.Effect as EffectModifier);
                     }
                 }
 
-                GameContext.WeatherCardsBattleRow.Clear();
+                GameContext.Instance.WeatherCardsBattleRow.Clear();
             };
 
             Medic.Modifier = context =>
             {
                 if (context != null)
                 {
-                    GameContext.ActivePlayer.Discard.Remove(context);
+                    GameContext.Instance.ActivePlayer.Discard.Remove(context);
                     SpawnCard(context);
                 }
                 else return;
@@ -107,16 +108,16 @@ namespace Gwent_Release.Models
 
             Spy.Modifier = context =>
             {
-                GameContext.ActivePlayer.TakeCard(2);
+                GameContext.Instance.ActivePlayer.TakeCard(2);
             };
 
             Scorch.Modifier = context =>
             {
                 int? generalMaxCardScore = 0;
                 int? tempMaxCardScore;
-                List<UnitCard> MaxCards = new List<UnitCard>();                
+                List<UnitCard> MaxCards = new List<UnitCard>();
 
-                foreach (var battleRow in GameContext.GetAllPlayersRows())
+                foreach (var battleRow in GameContext.Instance.GetAllPlayersRows())
                 {
                     tempMaxCardScore = battleRow.BattleRowCards?.OfType<UnitCard>().Max(card => card.ActualCardScore);
                     if (tempMaxCardScore > generalMaxCardScore)
@@ -131,7 +132,7 @@ namespace Gwent_Release.Models
                     }
                 }
 
-                foreach (var battleRow in GameContext.GetAllPlayersRows())
+                foreach (var battleRow in GameContext.Instance.GetAllPlayersRows())
                 {
                     foreach (var card in MaxCards)
                     {
@@ -144,43 +145,43 @@ namespace Gwent_Release.Models
             {
                 int? ActivePlayerMaxCardScore = 0;
                 int? PassivePlayerMaxCardScore = 0;
-                List<UnitCard> MaxCards = new List<UnitCard>();                
+                List<UnitCard> MaxCards = new List<UnitCard>();
 
-                ActivePlayerMaxCardScore = GameContext.ActivePlayer.MeleeBattleRow.BattleRowCards?
+                ActivePlayerMaxCardScore = GameContext.Instance.ActivePlayer.MeleeBattleRow.BattleRowCards?
                 .OfType<UnitCard>()
                 .Where(card => card.JsonNameKey != "Villentretenmerth")
                 .Max(card => card.ActualCardScore) ?? 0;
 
-                PassivePlayerMaxCardScore = GameContext.PassivePlayer.MeleeBattleRow.BattleRowCards?
+                PassivePlayerMaxCardScore = GameContext.Instance.PassivePlayer.MeleeBattleRow.BattleRowCards?
                 .OfType<UnitCard>()
                 .Max(card => card.ActualCardScore) ?? 0;
 
                 if (ActivePlayerMaxCardScore > PassivePlayerMaxCardScore)
-                {                    
-                    MaxCards.AddRange(GameContext.ActivePlayer.MeleeBattleRow.BattleRowCards?.OfType<UnitCard>().Where(card => card.ActualCardScore == ActivePlayerMaxCardScore));
+                {
+                    MaxCards.AddRange(GameContext.Instance.ActivePlayer.MeleeBattleRow.BattleRowCards?.OfType<UnitCard>().Where(card => card.ActualCardScore == ActivePlayerMaxCardScore));
                 }
-                else if(ActivePlayerMaxCardScore < PassivePlayerMaxCardScore)
-                {                    
-                    MaxCards.AddRange(GameContext.PassivePlayer.MeleeBattleRow.BattleRowCards?.OfType<UnitCard>().Where(card => card.ActualCardScore == PassivePlayerMaxCardScore));
+                else if (ActivePlayerMaxCardScore < PassivePlayerMaxCardScore)
+                {
+                    MaxCards.AddRange(GameContext.Instance.PassivePlayer.MeleeBattleRow.BattleRowCards?.OfType<UnitCard>().Where(card => card.ActualCardScore == PassivePlayerMaxCardScore));
                 }
-                else if(ActivePlayerMaxCardScore == PassivePlayerMaxCardScore)
-                {                    
-                    MaxCards.AddRange(GameContext.ActivePlayer.MeleeBattleRow.BattleRowCards?.OfType<UnitCard>().Where(card => card.ActualCardScore == ActivePlayerMaxCardScore));
-                    MaxCards.AddRange(GameContext.PassivePlayer.MeleeBattleRow.BattleRowCards?.OfType<UnitCard>().Where(card => card.ActualCardScore == PassivePlayerMaxCardScore));
+                else if (ActivePlayerMaxCardScore == PassivePlayerMaxCardScore)
+                {
+                    MaxCards.AddRange(GameContext.Instance.ActivePlayer.MeleeBattleRow.BattleRowCards?.OfType<UnitCard>().Where(card => card.ActualCardScore == ActivePlayerMaxCardScore));
+                    MaxCards.AddRange(GameContext.Instance.PassivePlayer.MeleeBattleRow.BattleRowCards?.OfType<UnitCard>().Where(card => card.ActualCardScore == PassivePlayerMaxCardScore));
                 }
-                                
+
                 foreach (var card in MaxCards)
                 {
-                    GameContext.ActivePlayer.MeleeBattleRow.RemoveCardFromBattleRow(card);
-                    GameContext.PassivePlayer.MeleeBattleRow.RemoveCardFromBattleRow(card);
-                }                
+                    GameContext.Instance.ActivePlayer.MeleeBattleRow.RemoveCardFromBattleRow(card);
+                    GameContext.Instance.PassivePlayer.MeleeBattleRow.RemoveCardFromBattleRow(card);
+                }
             };
 
-            Decoy.Modifier = context => 
+            Decoy.Modifier = context =>
             {
-                foreach (var battleRow in GameContext.ActivePlayer.PlayerBattleRows)
+                foreach (var battleRow in GameContext.Instance.ActivePlayer.PlayerBattleRows)
                 {
-                    if(context?.BattleRow == battleRow.BattleRowType)
+                    if (context?.BattleRow == battleRow.BattleRowType)
                     {
                         for (int i = 0; i < battleRow.CardsCount; i++)
                         {
@@ -188,15 +189,15 @@ namespace Gwent_Release.Models
                             if (context == card)
                             {
                                 //Card Decoy = CardsStore.NeutralDeck.Find(decoy => decoy.JsonNameKey == "Decoy");
-                                Card Decoy = GameContext.ActivePlayer.Hand.HandCards.First(_card => _card.Effect == EffectModifiersStore.Decoy);
+                                Card Decoy = GameContext.Instance.ActivePlayer.Hand.HandCards.First(_card => _card.Effect == EffectModifiersStore.Decoy);
 
-                                GameContext.ActivePlayer.Hand.HandCards.Remove(Decoy);
+                                GameContext.Instance.ActivePlayer.Hand.HandCards.Remove(Decoy);
                                 battleRow.BattleRowCards.Insert(i, Decoy); // Вставляем карту
                                 battleRow.RemoveCardFromBattleRow(card); // Удаляем оригинальную карту
                                 // Ебейший костыль, потому что после прошлого ремува карта автоматичеки попадает в отбой,
                                 // а при использовании чучела такого быть не должно, потому просто вручную убираю карту из отбоя))
-                                GameContext.ActivePlayer.Discard.Remove(card);                                
-                                GameContext.ActivePlayer.Hand.HandCards.Add(card);
+                                GameContext.Instance.ActivePlayer.Discard.Remove(card);
+                                GameContext.Instance.ActivePlayer.Hand.HandCards.Add(card);
 
                                 //i++; // Пропускаем только что добавленную карту
                                 break;
@@ -205,14 +206,14 @@ namespace Gwent_Release.Models
                         break;
                     }
                 }
-                GameContext.StartTurn(context);
+                GameContext.Instance.StartTurn(context);
             };
 
             EmhyrCardSteal.Modifier = context =>
             {
                 if (context != null)
                 {
-                    GameContext.PassivePlayer.Discard.Remove(context);
+                    GameContext.Instance.PassivePlayer.Discard.Remove(context);
                     SpawnCard(context);
                 }
                 else return;
@@ -222,19 +223,19 @@ namespace Gwent_Release.Models
             {
                 if (context != null)
                 {
-                    GameContext.ActivePlayer.Deck.DeckCards.Remove(context);
+                    GameContext.Instance.ActivePlayer.Deck.DeckCards.Remove(context);
                     SpawnCard(context);
                 }
                 else return;
             };
-            
-        }     
-        
+
+        }
+
         public static void SpawnCard(Card card)
         {
             if (card.Effect == Spy)
             {
-                foreach (var row in GameContext.PassivePlayer.PlayerBattleRows) // PassivePlayer
+                foreach (var row in GameContext.Instance.PassivePlayer.PlayerBattleRows) // PassivePlayer
                 {
                     if (card.BattleRow == row.BattleRowType)
                     {
@@ -244,7 +245,7 @@ namespace Gwent_Release.Models
             }
             else
             {
-                foreach (var row in GameContext.ActivePlayer.PlayerBattleRows)
+                foreach (var row in GameContext.Instance.ActivePlayer.PlayerBattleRows)
                 {
                     if (card.BattleRow == row.BattleRowType)
                     {

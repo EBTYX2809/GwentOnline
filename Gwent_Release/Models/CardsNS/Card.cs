@@ -1,11 +1,12 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Gwent_Release.Models.EffectsNS;
 
-namespace Gwent_Release.Models
+namespace Gwent_Release.Models.CardsNS
 {
     public class Card : INotifyPropertyChanged
-    {        
+    {
         public object ObjectProperty => this; // Need to give Card object in converter binding                                              
         private int? _actualCardScore;
         public int? ActualCardScore
@@ -22,12 +23,12 @@ namespace Gwent_Release.Models
             }
         }
         private CardInfo _cardInfo;
-        public CardInfo CardInfo 
+        public CardInfo CardInfo
         {
             get => _cardInfo;
             set
             {
-                if (_cardInfo != value) 
+                if (_cardInfo != value)
                 {
                     _cardInfo = value;
                     OnPropertyChanged();
@@ -43,14 +44,14 @@ namespace Gwent_Release.Models
             get => _image;
             set
             {
-                if (_image != value) 
+                if (_image != value)
                 {
                     _image = value;
                 }
             }
         }
         public string JsonNameKey { get; private set; }
-        public Fractions Fraction {  get; private set; }
+        public Fractions Fraction { get; private set; }
         public BattleRows BattleRow { get; private set; }
         public Effect Effect { get; set; }
         public Card(string jsonNameKey, int? actualCardScore = null, Fractions fraction = 0, BattleRows battleRow = 0)
@@ -64,10 +65,10 @@ namespace Gwent_Release.Models
 
         public virtual Card CopyCard()
         {
-            return new Card(JsonNameKey, ActualCardScore, Fraction, BattleRow) 
+            return new Card(JsonNameKey, ActualCardScore, Fraction, BattleRow)
             {
-                Effect = Effect, 
-                CardInfo = CardInfo 
+                Effect = Effect,
+                CardInfo = CardInfo
             };
         }
 

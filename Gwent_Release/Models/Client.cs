@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Gwent_Release.Models.CardsNS;
 
 namespace Gwent_Release.Models
 {
@@ -63,7 +64,7 @@ namespace Gwent_Release.Models
             if (info == "Disconnect")
             {
                 MessageBox.Show("Oponent disconnected.");
-                GameContext.ReturnToMenuWindow(this);
+                GameContext.Instance.ReturnToMenuWindow(this);
             }
 
             return info;
@@ -71,13 +72,13 @@ namespace Gwent_Release.Models
 
         public async Task SwapDeck(List<Card> cards)
         {
-            string myDeck = $"{GameContext.Player1.Leader.JsonNameKey}|" + string.Join("|", cards.Select(card => card.JsonNameKey));
+            string myDeck = $"{GameContext.Instance.Player1.Leader.JsonNameKey}|" + string.Join("|", cards.Select(card => card.JsonNameKey));
 
             SendInfo(myDeck);
 
             string enemyDeck = await ReceiveInfo();
 
-            GameContext.Player2.CreateDeck(enemyDeck);            
+            GameContext.Instance.Player2.CreateDeck(enemyDeck);            
         }
 
         public async Task TossCoin()
@@ -88,29 +89,29 @@ namespace Gwent_Release.Models
 
             if(info == "active")
             {
-                GameContext.ActivePlayer = GameContext.Player1;
-                GameContext.StarterPlayer = GameContext.Player1;
-                GameContext.PassivePlayer = GameContext.Player2;
-                GameContext.IsPlayer1Turn = true;
+                GameContext.Instance.ActivePlayer = GameContext.Instance.Player1;
+                GameContext.Instance.StarterPlayer = GameContext.Instance.Player1;
+                GameContext.Instance.PassivePlayer = GameContext.Instance.Player2;
+                GameContext.Instance.IsPlayer1Turn = true;
             }
             else if(info == "passive")
             {
-                GameContext.ActivePlayer = GameContext.Player2;
-                GameContext.StarterPlayer = GameContext.Player2;
-                GameContext.PassivePlayer = GameContext.Player1;
-                GameContext.IsPlayer1Turn = false;
+                GameContext.Instance.ActivePlayer = GameContext.Instance.Player2;
+                GameContext.Instance.StarterPlayer = GameContext.Instance.Player2;
+                GameContext.Instance.PassivePlayer = GameContext.Instance.Player1;
+                GameContext.Instance.IsPlayer1Turn = false;
             }
         }
 
         public async Task<bool> WaitingSecondPlayer()
         {
-            SendInfo($"Ready|{GameContext.Player1.Name}");
+            SendInfo($"Ready|{GameContext.Instance.Player1.Name}");
 
             string info = await ReceiveInfo() ?? "";
             
             if(info.Contains("Ready"))
             {                    
-                GameContext.Player2.Name = info.Replace("Ready|", "");
+                GameContext.Instance.Player2.Name = info.Replace("Ready|", "");
                 return true;
             }  
             else if (info == "Timeout")
