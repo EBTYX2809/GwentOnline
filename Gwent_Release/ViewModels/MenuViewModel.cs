@@ -22,34 +22,49 @@ namespace Gwent_Release.ViewModels
                 {
                     GameContext.Instance.Player1.Name = value;
                     OnPropertyChanged();
-                    isPlaceholderVisible = string.IsNullOrEmpty(_playerName);
+                    isNamePlaceholderVisible = string.IsNullOrEmpty(_playerName);
                 }
             }
         }
 
-        private bool _isPlaceholderVisible;
-        public bool isPlaceholderVisible
+        private bool _isNamePlaceholderVisible;
+        public bool isNamePlaceholderVisible
         {
-            get => _isPlaceholderVisible;
+            get => _isNamePlaceholderVisible;
             set
             {
-                if (_isPlaceholderVisible != value)
+                if (_isNamePlaceholderVisible != value)
                 {
-                    _isPlaceholderVisible = value;
+                    _isNamePlaceholderVisible = value;
                     OnPropertyChanged();
                 }
             }
         }
 
-        private bool _setLanguageToggleButton;
-        public bool setLanguageToggleButton
+        private string _IPAddress;
+        public string IPAddress
         {
-            get => _setLanguageToggleButton;
+            get => _IPAddress;
             set
             {
-                if (_setLanguageToggleButton != value)
+                if (_IPAddress != value)
                 {
-                    _setLanguageToggleButton = value;
+                    _IPAddress = value;
+                    OnPropertyChanged();
+                    isNamePlaceholderVisible = string.IsNullOrEmpty(_IPAddress);
+                }
+            }
+        }
+
+        private bool _isIPAddressPlaceholderVisible;
+        public bool isIPAddressPlaceholderVisible
+        {
+            get => _isIPAddressPlaceholderVisible;
+            set
+            {
+                if (_isIPAddressPlaceholderVisible != value)
+                {
+                    _isIPAddressPlaceholderVisible = value;
                     OnPropertyChanged();
                 }
             }
@@ -111,22 +126,37 @@ namespace Gwent_Release.ViewModels
             }
         }
 
+        public List<string> Languages { get; } = new List<string>() { "English", "Russian", "Ukrainian" };
+
+        private string _selectedLanguage;
+        public string SelectedLanguage
+        {
+            get => _selectedLanguage;
+            set
+            {
+                if (_selectedLanguage != value)
+                {
+                    _selectedLanguage = value;
+                    OnPropertyChanged();
+                    SetLanguage();
+                }
+            }
+        }
+
         public ICommand PlayCommand { get; }
         public ICommand PickFractionCommand { get; }
-        public ICommand SetLanguageCommand { get; }
 
         public MenuViewModel()
         {
             PlayCommand = new RelayCommand(Play);
             PickFractionCommand = new RelayCommand(PickFraction);
-            SetLanguageCommand = new RelayCommand(SetLanguage);
 
             CardsList = new List<Card>(CardsStore.NeutralDeck
                             .Concat(CardsStore.NorthKingdomsDeck
                             .Concat(CardsStore.NilfgaardDeck)));
 
-            if (playerName != null) isPlaceholderVisible = false;
-            else isPlaceholderVisible = true;
+            if (playerName != null) isNamePlaceholderVisible = false;
+            else isNamePlaceholderVisible = true;
             isMenuVisible = true;
             isCardsListVisible = false;
         }
@@ -137,7 +167,7 @@ namespace Gwent_Release.ViewModels
             {
                 Client client = new Client();
 
-                client.Connect("35.229.67.170", 10000); // 127.0.0.1 // 35.229.67.170
+                client.Connect(IPAddress ?? "http://gwent-server.duckdns.org", 10000); // 127.0.0.1
 
                 isMenuVisible = false;
 
@@ -168,10 +198,23 @@ namespace Gwent_Release.ViewModels
             else GameContext.Instance.Player1.fraction = Fractions.Nilfgaard;
         }
 
-        private void SetLanguage(object parameter)
+        private void SetLanguage()
         {
-            if (!setLanguageToggleButton) LanguageManager.SetLanguage("EN");
-            else LanguageManager.SetLanguage("RU");
+            switch (SelectedLanguage)
+            {
+                case "English":
+                    LanguageManager.SetLanguage("EN");
+                    break;
+                case "Russian":
+                    LanguageManager.SetLanguage("RU");
+                    break;
+                case "Ukrainian":
+                    LanguageManager.SetLanguage("UA");
+                    break;
+                default:
+                    LanguageManager.SetLanguage("EN");
+                    break;
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

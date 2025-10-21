@@ -89,34 +89,81 @@
         Content="Play"
         FontSize="60"
         FontWeight="DemiBold"
-        Margin="0 0 0 650"
+        Margin="0 0 0 675"
         Command="{Binding PlayCommand}"/>
 
-            <TextBox Width="500" Height="100" 
-         VerticalAlignment="Center"
-         HorizontalAlignment="Center"
-         Background="#50E0E0E0"
-         Text="{Binding playerName, UpdateSourceTrigger=PropertyChanged}"
-         TextAlignment="Center"
-         Padding="0 5 0 0"
-         FontSize="60"
-         FontWeight="DemiBold"
-         Margin="0 0 0 400"/>
+            <!-- Name field -->
+            <TextBox Width="345" Height="75" 
+                VerticalAlignment="Center"
+                HorizontalAlignment="Left"
+                Background="#50E0E0E0"
+                Text="{Binding playerName, UpdateSourceTrigger=PropertyChanged}"
+                TextAlignment="Center"
+                Padding="0 5 0 0"
+                FontSize="40"
+                FontWeight="DemiBold"
+                Margin="0 0 0 400"/>
 
             <!-- Placeholder -->
-            <TextBlock Width="500" Height="100"                    
-           Text="Enter name:"
-           Padding="0 5 0 0"
-           VerticalAlignment="Center"
-           HorizontalAlignment="Center"
-           Background="Transparent"
-           TextAlignment="Center"
-           FontSize="60"
-           FontWeight="DemiBold"
-           Margin="0 0 0 400"
-           IsHitTestVisible="False"
-           Visibility="{Binding isPlaceholderVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            <TextBlock Width="345" Height="75"                    
+                Text="Name"
+                Padding="0 5 0 0"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Left"
+                Background="Transparent"
+                TextAlignment="Center"
+                FontSize="40"
+                FontWeight="DemiBold"
+                Foreground="#282829"
+                Margin="0 0 0 400"
+                IsHitTestVisible="False"
+                Visibility="{Binding isNamePlaceholderVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
+            <TextBlock Width="345" Height="50" 
+                VerticalAlignment="Center"
+                HorizontalAlignment="Left"
+                Background="Transparent"
+                TextAlignment="Center"
+                Text="Name field:"
+                FontSize="30"                   
+                Margin="0 0 0 520"/>
+
+            <!-- IP field -->
+            <TextBox Width="345" Height="75" 
+                VerticalAlignment="Center"
+                HorizontalAlignment="Right"
+                Background="#50E0E0E0"
+                Text="{Binding IPAddress, UpdateSourceTrigger=PropertyChanged}"
+                TextAlignment="Center"
+                Padding="0 5 0 0"
+                FontSize="40"
+                FontWeight="DemiBold"
+                Margin="0 0 0 400"/>
+
+            <!-- Placeholder -->
+            <TextBlock Width="345" Height="75"                    
+                Text="http://gwent-server.duckdns.org"
+                Padding="0 5 0 0"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Right"
+                Background="Transparent"
+                TextAlignment="Center"
+                FontSize="40"
+                FontWeight="DemiBold"
+                Foreground="#282829"
+                Margin="0 0 0 400"
+                IsHitTestVisible="False"
+                Visibility="{Binding isIPAddressPlaceholderVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+            <TextBlock Width="345" Height="50" 
+                VerticalAlignment="Center"
+                HorizontalAlignment="Right"
+                Background="Transparent"
+                TextAlignment="Center"
+                Text="IP field:"
+                FontSize="30"                   
+                Margin="0 0 0 520"/>
+            
             <TextBlock Width="400" Height="50" 
            VerticalAlignment="Center"
            HorizontalAlignment="Center"
@@ -191,50 +238,20 @@
            FontSize="30"
            Margin="0 550 0 0"/>
 
-            <ToggleButton Width="225" Height="60" Margin="0 650 0 0" 
-      BorderThickness="1" BorderBrush="Black" Background="Transparent"
-              Command="{Binding SetLanguageCommand}"
-              IsChecked="{Binding setLanguageToggleButton}">
-                <ToggleButton.Template>
-                    <ControlTemplate TargetType="ToggleButton">
-                        <Border Background="{TemplateBinding Background}"
-            BorderBrush="{TemplateBinding BorderBrush}"
-            BorderThickness="{TemplateBinding BorderThickness}"
-            CornerRadius="4">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                
-                                <Border x:Name="LeftBorder" Grid.Column="0" Background="Transparent">
-                                    <TextBlock Text="English" FontSize="30" FontWeight="DemiBold" 
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
-                           Foreground="Black"/>
-                                </Border>
-                                
-                                <Border x:Name="RightBorder" Grid.Column="1" Background="Transparent">
-                                    <TextBlock Text="Russian" FontSize="30" FontWeight="DemiBold" 
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
-                           Foreground="Black"/>
-                                </Border>
-                            </Grid>
-                        </Border>                        
-                        <ControlTemplate.Triggers>                            
-                            <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="RightBorder" Property="Background" Value="#50E0E0E0"/>
-                                <Setter TargetName="LeftBorder" Property="Background" Value="Transparent"/>
-                            </Trigger>                            
-                            <Trigger Property="IsChecked" Value="False">
-                                <Setter TargetName="LeftBorder" Property="Background" Value="#50E0E0E0"/>
-                                <Setter TargetName="RightBorder" Property="Background" Value="Transparent"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </ToggleButton.Template>
-            </ToggleButton>
+            <ComboBox Width="300"
+                      Height="75"
+                      VerticalAlignment="Bottom"
+                      HorizontalAlignment="Center"                      
+                      ItemsSource="{Binding Languages}" 
+                      SelectedItem="{Binding SelectedLanguage}"
+                      FontSize="35"                       
+                      Margin="0,0,0,20">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" TextAlignment="Center"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
         </Grid>
 
         <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled"
