@@ -1,0 +1,58 @@
+name: Build and generate exe
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build-binary:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Get version from tag
+        shell: pwsh
+        run: |
+          $tag = $env:GITHUB_REF_NAME
+          $ver = $tag -replace '^v', ''
+          "APP_VERSION=$ver" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+
+      - name: Build Docker image
+        run: |
+          docker build `
+          --build-arg APP_VERSION=$env:APP_VERSION `
+            -t gwent:latest `
+            ./Gwent_Release
+
+      - name: Create publish folder
+        run: |
+          mkdir C:\temp\publish
+
+      - name: Export app archive from image
+        run: |
+          docker create --name export-container gwent:latest
+          docker cp export-container:C:\app\Gwent.zip C:\temp\publish
+          docker rm export-container
+
+      - name: Upload publish folder
+        uses: actions/upload-artifact@v4
+        with:
+          name: publish-folder
+          path: C:\temp\publish
+
+  save-artifacts-on-server:
+    needs: build-binary
+    runs-on: [self-hosted, gwent]
+    steps:
+      - name: Download publish
+        uses: actions/download-artifact@v4
+        with:
+          name: publish-folder
+          path: /home/ubuntu/projects/gwent/updates/publish
+
+      - name: Cleanup temp folder
+        run: rm -rf /tmp/config

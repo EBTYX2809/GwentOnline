@@ -1,0 +1,35 @@
+# escape=`
+ARG APP_VERSION=0.0.0
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0-windowsservercore-ltsc2022 AS build
+WORKDIR /app
+
+COPY *.csproj ./
+RUN dotnet restore
+
+COPY . .
+
+ARG APP_VERSION
+
+ENV APP_VERSION=${APP_VERSION}
+
+RUN dotnet publish Gwent_Release.csproj `
+    --self-contained true `
+    --runtime win-x64 `
+    --configuration Release `
+    --output /publish `
+    /p:PublishSingleFile=true `
+    /p:PublishTrimmed=false `
+    /p:Version=%APP_VERSION% `
+    /p:FileVersion=%APP_VERSION% `
+    /p:AssemblyVersion=%APP_VERSION%
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0-windowsservercore-ltsc2022 AS generate
+WORKDIR /app
+
+COPY --from=build /publish /app/publish
+
+ARG APP_VERSION=0.0.0
+ENV APP_VERSION=${APP_VERSION}
+
+RUN powershell -Command "Compress-Archive -Path C:\app\publish\* -DestinationPath C:\app\Gwent.zip"
