@@ -18,8 +18,6 @@ It's standalone copy of Gwent from The Witcher 3: Wild Hunt, with posibility pla
   
 </div>
 
-Link to server: https://github.com/EBTYX2809/ServerForGwent
-
 ![Menu screenshot](https://github.com/EBTYX2809/GwentOnline/blob/master/GwentMenu.jpg) 
 
 
