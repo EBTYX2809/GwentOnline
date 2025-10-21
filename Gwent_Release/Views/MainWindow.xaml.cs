@@ -10,6 +10,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
 using Gwent_Release.Models;
+using Gwent_Release.Models.CardsNS;
+using Gwent_Release.Models.EffectsNS;
 
 namespace Gwent_Release.Views
 {
@@ -42,12 +44,12 @@ namespace Gwent_Release.Views
             InitializeHornSlots();
             MusicBG.Initialize(bgMusic);
 
-            foreach (var row in GameContext.Player1.PlayerBattleRows)
+            foreach (var row in GameContext.Instance.Player1.PlayerBattleRows)
             {
                 row.GiveMedicCardToContext += ReturnRevivedCard;
             }
-            GameContext.NewWeatherAdded += PaintRowsByWeather;
-            GameContext.TurnAnnouncement += ShowAnnouncement;
+            GameContext.Instance.NewWeatherAdded += PaintRowsByWeather;
+            GameContext.Instance.TurnAnnouncement += ShowAnnouncement;
             TurnManager.ActivateLeader += DeactivatePlayer2Leader;
             
             Loaded += MainWindow_Loaded;                     
@@ -57,7 +59,7 @@ namespace Gwent_Release.Views
         {                       
             MusicBG.PlayNextTrack();
 
-            GameContext.Player1.CreateDeck(GameContext.Player1.fraction);
+            GameContext.Instance.Player1.CreateDeck(GameContext.Instance.Player1.fraction);
 
             cancellationToken = new CancellationTokenSource();
             try
@@ -66,15 +68,15 @@ namespace Gwent_Release.Views
             }
             catch (OperationCanceledException) { }
 
-            GameContext.ActivePlayer = GameContext.Player2;            
+            GameContext.Instance.ActivePlayer = GameContext.Instance.Player2;            
             await ShowAnnouncement("Awaiting oponent and preparing decks.");
 
-            await client.SwapDeck(GameContext.Player1.Hand.HandCards.Concat(GameContext.Player1.Deck.DeckCards).ToList());
-            GameContext.ActivePlayer = GameContext.Player1;
+            await client.SwapDeck(GameContext.Instance.Player1.Hand.HandCards.Concat(GameContext.Instance.Player1.Deck.DeckCards).ToList());
+            GameContext.Instance.ActivePlayer = GameContext.Instance.Player1;
 
             await client.TossCoin();
-            await ShowAnnouncement($"{GameContext.ActivePlayer.Name} start game.");
-            if (GameContext.ActivePlayer != GameContext.Player1)
+            await ShowAnnouncement($"{GameContext.Instance.ActivePlayer.Name} start game.");
+            if (GameContext.Instance.ActivePlayer != GameContext.Instance.Player1)
             {
                 TurnManager.EnemyTurn();
             }
@@ -87,22 +89,7 @@ namespace Gwent_Release.Views
             await Task.Delay(1000);
             AnnouncementBox.Text = null;
             AnnouncementBox.Visibility = Visibility.Collapsed;
-            PlayersTurnMarksVisibilitySwitcher();
 
-        }
-
-        private void PlayersTurnMarksVisibilitySwitcher()
-        {
-            if (GameContext.IsPlayer1Turn)
-            {
-                Player1TurnMark.Visibility = Visibility.Visible;
-                Player2TurnMark.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                Player2TurnMark.Visibility = Visibility.Visible;
-                Player1TurnMark.Visibility = Visibility.Collapsed;
-            }
         }
 
         private async Task StartMuligan(CancellationToken token)
@@ -110,7 +97,7 @@ namespace Gwent_Release.Views
             ShowDiscard(null);
             HideDiscard.Content = "Accept";
 
-            DiscardMenu.ItemsSource = GameContext.Player1.Hand.HandCards;
+            DiscardMenu.ItemsSource = GameContext.Instance.Player1.Hand.HandCards;
 
             for (int i = 0; i < 2; i++)
             {
@@ -120,15 +107,15 @@ namespace Gwent_Release.Views
                 using (token.Register(() => _muliganCard.TrySetCanceled()))
                 {
                     Card selectedCard = await _muliganCard.Task;
-                    GameContext.Player1.Hand.HandCards.Remove(selectedCard);
-                    GameContext.Player1.Deck.DeckCards.Add(selectedCard);
-                    var cardForReplace = GameContext.Player1.Deck.DeckCards.First();
-                    GameContext.Player1.Hand.HandCards.Add(cardForReplace);
-                    GameContext.Player1.Deck.DeckCards.Remove(cardForReplace);
+                    GameContext.Instance.Player1.Hand.HandCards.Remove(selectedCard);
+                    GameContext.Instance.Player1.Deck.DeckCards.Add(selectedCard);
+                    var cardForReplace = GameContext.Instance.Player1.Deck.DeckCards.First();
+                    GameContext.Instance.Player1.Hand.HandCards.Add(cardForReplace);
+                    GameContext.Instance.Player1.Deck.DeckCards.Remove(cardForReplace);
                 }
             }
 
-            DiscardMenu.ItemsSource = GameContext.Player1.Discard;
+            DiscardMenu.ItemsSource = GameContext.Instance.Player1.Discard;
             HideDiscard.Content = "Hide discard";
             ShowDiscardMenu.Visibility = Visibility.Collapsed;
             GameDesk.Effect = null;
@@ -245,7 +232,7 @@ namespace Gwent_Release.Views
                 }
                 else if(row.Background == CardPickPlusWeatherColor)
                 {
-                    var battleRow = GameContext.ActivePlayer.PlayerBattleRows
+                    var battleRow = GameContext.Instance.ActivePlayer.PlayerBattleRows
                         .Find(_battleRow => row.Tag is BattleRows battleRowType && _battleRow.BattleRowType == battleRowType);
 
                     if (battleRow.EffectModifiers.Contains(EffectModifiersStore.Frost))
@@ -273,11 +260,11 @@ namespace Gwent_Release.Views
 
         private void PaintRowsByWeather()
         {
-            if (GameContext.WeatherCardsBattleRow.Count() > 0)
+            if (GameContext.Instance.WeatherCardsBattleRow.Count() > 0)
             {
-                foreach (WeatherCard weatherCard in GameContext.WeatherCardsBattleRow)
+                foreach (WeatherCard weatherCard in GameContext.Instance.WeatherCardsBattleRow)
                 {
-                    foreach (var row in GameContext.GetAllPlayersRows())
+                    foreach (var row in GameContext.Instance.GetAllPlayersRows())
                     {
                         if (row.BattleRowType == weatherCard.ActionBattleRow)
                         {
@@ -355,7 +342,7 @@ namespace Gwent_Release.Views
 
                 UnitCard selectedCard = await _cardSelectionTaskSource.Task;
 
-                DiscardMenu.ItemsSource = GameContext.Player1.Discard;
+                DiscardMenu.ItemsSource = GameContext.Instance.Player1.Discard;
                 HideDiscard.Visibility = Visibility.Visible;
                 ShowDiscardMenu.Visibility = Visibility.Collapsed;
                 GameDesk.Effect = null;
@@ -369,7 +356,7 @@ namespace Gwent_Release.Views
 
         private void Card_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (GameContext.ActivePlayer == GameContext.Player1)
+            if (GameContext.Instance.ActivePlayer == GameContext.Instance.Player1)
             {
                 var card = sender as Grid;
 
@@ -550,8 +537,8 @@ namespace Gwent_Release.Views
 
             if (card.BattleRow == BattleRows.MeleeBattleRow)
             {
-                GameContext.Player1.Hand.HandCards.Remove(card);
-                GameContext.Player1.MeleeBattleRow.AddCardToBattleRow(card);          
+                GameContext.Instance.Player1.Hand.HandCards.Remove(card);
+                GameContext.Instance.Player1.MeleeBattleRow.AddCardToBattleRow(card);          
 
                 e.Handled = true;
             }
@@ -564,8 +551,8 @@ namespace Gwent_Release.Views
 
             if (card.Effect == EffectModifiersStore.Horn && card is ActionCard)
             {
-                GameContext.Player1.Hand.HandCards.Remove(card);                
-                GameContext.Player1.MeleeBattleRow.AddCardToBattleRow(card);                
+                GameContext.Instance.Player1.Hand.HandCards.Remove(card);                
+                GameContext.Instance.Player1.MeleeBattleRow.AddCardToBattleRow(card);                
             }
         }
 
@@ -580,8 +567,8 @@ namespace Gwent_Release.Views
 
             if (card.BattleRow == BattleRows.MiddleBattleRow)
             {
-                GameContext.Player1.Hand.HandCards.Remove(card);
-                GameContext.Player1.MiddleBattleRow.AddCardToBattleRow(card);           
+                GameContext.Instance.Player1.Hand.HandCards.Remove(card);
+                GameContext.Instance.Player1.MiddleBattleRow.AddCardToBattleRow(card);           
 
                 e.Handled = true;
             }
@@ -594,8 +581,8 @@ namespace Gwent_Release.Views
 
             if (card.Effect == EffectModifiersStore.Horn && card is ActionCard)
             {
-                GameContext.Player1.Hand.HandCards.Remove(card);                
-                GameContext.Player1.MiddleBattleRow.AddCardToBattleRow(card);                
+                GameContext.Instance.Player1.Hand.HandCards.Remove(card);                
+                GameContext.Instance.Player1.MiddleBattleRow.AddCardToBattleRow(card);                
             }
         }
 
@@ -610,8 +597,8 @@ namespace Gwent_Release.Views
 
             if (card.BattleRow == BattleRows.SiegeBattleRow)
             {
-                GameContext.Player1.Hand.HandCards.Remove(card); 
-                GameContext.Player1.SiegeBattleRow.AddCardToBattleRow(card);            
+                GameContext.Instance.Player1.Hand.HandCards.Remove(card); 
+                GameContext.Instance.Player1.SiegeBattleRow.AddCardToBattleRow(card);            
 
                 e.Handled = true;
             }
@@ -624,8 +611,8 @@ namespace Gwent_Release.Views
 
             if (card.Effect == EffectModifiersStore.Horn && card is ActionCard)
             {
-                GameContext.Player1.Hand.HandCards.Remove(card);                
-                GameContext.Player1.SiegeBattleRow.AddCardToBattleRow(card);                
+                GameContext.Instance.Player1.Hand.HandCards.Remove(card);                
+                GameContext.Instance.Player1.SiegeBattleRow.AddCardToBattleRow(card);                
             }
         }
 
@@ -635,11 +622,11 @@ namespace Gwent_Release.Views
 
             if (card.Effect == EffectModifiersStore.Scorch || card.Effect == EffectModifiersStore.ClearWeather)
             {
-                GameContext.Player1.Hand.HandCards.Remove(card);
+                GameContext.Instance.Player1.Hand.HandCards.Remove(card);
                 card.Effect.ActivateEffect(null);
 
                 TurnManager.PlayedCards.Add(card);
-                GameContext.StartTurn(card);
+                GameContext.Instance.StartTurn(card);
 
                 e.Handled = true;
             }
@@ -662,11 +649,11 @@ namespace Gwent_Release.Views
 
             if (card is WeatherCard weatherCard)
             {
-                GameContext.Player1.Hand.HandCards.Remove(card);
-                GameContext.WeatherCardsBattleRow.Add(weatherCard);
+                GameContext.Instance.Player1.Hand.HandCards.Remove(card);
+                GameContext.Instance.WeatherCardsBattleRow.Add(weatherCard);
 
                 TurnManager.PlayedCards.Add(card);
-                GameContext.StartTurn(card);
+                GameContext.Instance.StartTurn(card);
                 
                 PaintRowsByWeather();
 
@@ -677,10 +664,10 @@ namespace Gwent_Release.Views
 
         private void PassButton_Click(object sender, RoutedEventArgs e)
         {
-            if (GameContext.ActivePlayer == GameContext.Player1)
+            if (GameContext.Instance.ActivePlayer == GameContext.Instance.Player1)
             {
-                GameContext.Player1.HasPassed = true;
-                GameContext.StartTurn(null);
+                GameContext.Instance.Player1.HasPassed = true;
+                GameContext.Instance.StartTurn(null);
             }
             else return;            
         }
@@ -689,12 +676,12 @@ namespace Gwent_Release.Views
         {
             var card = GetCard(e);
 
-            if (card.Effect == EffectModifiersStore.Spy && GameContext.ActivePlayer != GameContext.Player2)
+            if (card.Effect == EffectModifiersStore.Spy && GameContext.Instance.ActivePlayer != GameContext.Instance.Player2)
             {
                 if (card.BattleRow == BattleRows.SiegeBattleRow)
                 {
-                    GameContext.Player1.Hand.HandCards.Remove(card); 
-                    GameContext.Player2.SiegeBattleRow.AddCardToBattleRow(card);          
+                    GameContext.Instance.Player1.Hand.HandCards.Remove(card); 
+                    GameContext.Instance.Player2.SiegeBattleRow.AddCardToBattleRow(card);          
 
                     e.Handled = true;
                 }
@@ -707,12 +694,12 @@ namespace Gwent_Release.Views
         {
             var card = GetCard(e);
 
-            if (card.Effect == EffectModifiersStore.Spy && GameContext.ActivePlayer != GameContext.Player2)
+            if (card.Effect == EffectModifiersStore.Spy && GameContext.Instance.ActivePlayer != GameContext.Instance.Player2)
             {
                 if (card.BattleRow == BattleRows.MiddleBattleRow)
                 {
-                    GameContext.Player1.Hand.HandCards.Remove(card);
-                    GameContext.Player2.MiddleBattleRow.AddCardToBattleRow(card);           
+                    GameContext.Instance.Player1.Hand.HandCards.Remove(card);
+                    GameContext.Instance.Player2.MiddleBattleRow.AddCardToBattleRow(card);           
 
                     e.Handled = true;
                 }
@@ -725,12 +712,12 @@ namespace Gwent_Release.Views
         {
             var card = GetCard(e);
 
-            if (card.Effect == EffectModifiersStore.Spy && GameContext.ActivePlayer != GameContext.Player2)
+            if (card.Effect == EffectModifiersStore.Spy && GameContext.Instance.ActivePlayer != GameContext.Instance.Player2)
             {
                 if (card.BattleRow == BattleRows.MeleeBattleRow)
                 {
-                    GameContext.Player1.Hand.HandCards.Remove(card);
-                    GameContext.Player2.MeleeBattleRow.AddCardToBattleRow(card);           
+                    GameContext.Instance.Player1.Hand.HandCards.Remove(card);
+                    GameContext.Instance.Player2.MeleeBattleRow.AddCardToBattleRow(card);           
 
                     e.Handled = true;
                 }
@@ -741,18 +728,18 @@ namespace Gwent_Release.Views
 
         private void Player1Discard_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            ShowDiscard(GameContext.Player1.Discard.ToList());            
+            ShowDiscard(GameContext.Instance.Player1.Discard.ToList());            
         }
         private void Player2Discard_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            ShowDiscard(GameContext.Player2.Discard.ToList());
+            ShowDiscard(GameContext.Instance.Player2.Discard.ToList());
         }
 
         private void HideDiscard_Click(object sender, RoutedEventArgs e)
         {
             if (HideDiscard.Content == "Accept")
             {
-                DiscardMenu.ItemsSource = GameContext.Player1.Discard;
+                DiscardMenu.ItemsSource = GameContext.Instance.Player1.Discard;
                 HideDiscard.Content = "Hide discard";
                 ShowDiscardMenu.Visibility = Visibility.Collapsed;
                 GameDesk.Effect = null;
@@ -767,22 +754,22 @@ namespace Gwent_Release.Views
 
         private async void Player1Leader_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (GameContext.ActivePlayer == GameContext.Player1 && GameContext.Player1.Leader.Effect != null)
+            if (GameContext.Instance.ActivePlayer == GameContext.Instance.Player1 && GameContext.Instance.Player1.Leader.Effect != null)
             {
-                TurnManager.PlayedCards.Add(GameContext.Player1.Leader);
+                TurnManager.PlayedCards.Add(GameContext.Instance.Player1.Leader);
 
-                var leaderEffect = GameContext.Player1.Leader.Effect;
+                var leaderEffect = GameContext.Instance.Player1.Leader.Effect;
 
                 if (leaderEffect == EffectModifiersStore.EmhyrCardSteal)
                 {
                     leaderEffect.ActivateEffect(
-                        await ReturnRevivedCard(GameContext.Player2.Discard
+                        await ReturnRevivedCard(GameContext.Instance.Player2.Discard
                         .Where(_card => _card is UnitCard).ToList()));
                 }
                 else if (leaderEffect == EffectModifiersStore.FoltestCardFromDeckPlay)
                 {
                     leaderEffect.ActivateEffect(
-                        await ReturnRevivedCard(GameContext.Player1.Deck.DeckCards
+                        await ReturnRevivedCard(GameContext.Instance.Player1.Deck.DeckCards
                         .Where(_card => _card is UnitCard).ToList()));
                 }                                                
                 Player1Leader.Opacity = 0.5;
@@ -807,7 +794,7 @@ namespace Gwent_Release.Views
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            GameContext.ReturnToMenuWindow(client);
+            GameContext.Instance.ReturnToMenuWindow(client);
         }
     }
 }

@@ -3,6 +3,7 @@ using System.IO;
 using System.Text.Json.Nodes;
 using System.Windows.Resources;
 using System.Windows;
+using Gwent_Release.Models.CardsNS;
 
 namespace Gwent_Release.Models
 {

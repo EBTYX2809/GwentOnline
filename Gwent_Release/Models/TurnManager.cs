@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Gwent_Release.Models.CardsNS;
+using Gwent_Release.Models.EffectsNS;
 
 namespace Gwent_Release.Models
 {
@@ -37,23 +39,23 @@ namespace Gwent_Release.Models
 
                 List<Card> playerCards = new List<Card>
                 (
-                    GameContext.ActivePlayer.Hand.HandCards
-                    .Concat(GameContext.ActivePlayer.Discard)
-                    .Concat(GameContext.ActivePlayer.MeleeBattleRow.BattleRowCards)
-                    .Concat(GameContext.ActivePlayer.MiddleBattleRow.BattleRowCards)
-                    .Concat(GameContext.ActivePlayer.SiegeBattleRow.BattleRowCards)
+                    GameContext.Instance.ActivePlayer.Hand.HandCards
+                    .Concat(GameContext.Instance.ActivePlayer.Discard)
+                    .Concat(GameContext.Instance.ActivePlayer.MeleeBattleRow.BattleRowCards)
+                    .Concat(GameContext.Instance.ActivePlayer.MiddleBattleRow.BattleRowCards)
+                    .Concat(GameContext.Instance.ActivePlayer.SiegeBattleRow.BattleRowCards)
                 );                
 
-                if (GameContext.ActivePlayer.Leader.Effect == EffectModifiersStore.FoltestCardFromDeckPlay)
+                if (GameContext.Instance.ActivePlayer.Leader.Effect == EffectModifiersStore.FoltestCardFromDeckPlay)
                 {
-                    playerCards.AddRange(GameContext.ActivePlayer.Deck.DeckCards);
+                    playerCards.AddRange(GameContext.Instance.ActivePlayer.Deck.DeckCards);
                 }
-                else if (GameContext.ActivePlayer.Leader.Effect == EffectModifiersStore.EmhyrCardSteal)
+                else if (GameContext.Instance.ActivePlayer.Leader.Effect == EffectModifiersStore.EmhyrCardSteal)
                 {
-                    playerCards.AddRange(GameContext.PassivePlayer.Discard);
+                    playerCards.AddRange(GameContext.Instance.PassivePlayer.Discard);
                 }
 
-                playerCards.Add(GameContext.ActivePlayer.Leader);
+                playerCards.Add(GameContext.Instance.ActivePlayer.Leader);
 
                 foreach (string cardName in playedCards)
                 {
@@ -69,7 +71,7 @@ namespace Gwent_Release.Models
             }
             else
             {
-                GameContext.StartTurn(null);
+                GameContext.Instance.StartTurn(null);
                 return;
             }
 
@@ -77,7 +79,7 @@ namespace Gwent_Release.Models
             PlayedCards.Remove(firstCard);
             if (firstCard.Effect != EffectModifiersStore.Decoy)
             {
-                GameContext.ActivePlayer.Hand.HandCards.Remove(firstCard);
+                GameContext.Instance.ActivePlayer.Hand.HandCards.Remove(firstCard);
             }
 
             UnitCard secondCard = null;
@@ -88,7 +90,7 @@ namespace Gwent_Release.Models
 
             if (firstCard is ActionCard horn && horn.Effect == EffectModifiersStore.Horn)
             {
-                foreach (var battleRow in GameContext.ActivePlayer.PlayerBattleRows)
+                foreach (var battleRow in GameContext.Instance.ActivePlayer.PlayerBattleRows)
                 {
                     if (battleRow.BattleRowType == (BattleRows)HornRow)
                     {
@@ -123,13 +125,13 @@ namespace Gwent_Release.Models
                 || firstCard.Effect == EffectModifiersStore.Fog
                 || firstCard.Effect == EffectModifiersStore.Rain)
             {
-                GameContext.WeatherCardsBattleRow.Add(firstCard as WeatherCard);
-                GameContext.StartTurn(firstCard);
+                GameContext.Instance.WeatherCardsBattleRow.Add(firstCard as WeatherCard);
+                GameContext.Instance.StartTurn(firstCard);
             }
             else if (firstCard.Effect == EffectModifiersStore.ClearWeather || firstCard.Effect == EffectModifiersStore.Scorch)
             {
                 firstCard.Effect.ActivateEffect(null);
-                GameContext.StartTurn(firstCard);
+                GameContext.Instance.StartTurn(firstCard);
             }
             else
             {
@@ -151,7 +153,7 @@ namespace Gwent_Release.Models
                 foreach (var card in PlayedCards)
                 {
                     secondCard = card as UnitCard;
-                    foreach (var row in GameContext.ActivePlayer.PlayerBattleRows)
+                    foreach (var row in GameContext.Instance.ActivePlayer.PlayerBattleRows)
                     {
                         if (firstCard.BattleRow == row.BattleRowType)
                         {
@@ -165,7 +167,7 @@ namespace Gwent_Release.Models
             }            
             else
             {
-                foreach (var row in GameContext.ActivePlayer.PlayerBattleRows)
+                foreach (var row in GameContext.Instance.ActivePlayer.PlayerBattleRows)
                 {
                     if (firstCard.BattleRow == row.BattleRowType)
                     {

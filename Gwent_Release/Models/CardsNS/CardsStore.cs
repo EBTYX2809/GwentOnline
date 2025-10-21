@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
+using Gwent_Release.Models.EffectsNS;
 
-namespace Gwent_Release.Models
+namespace Gwent_Release.Models.CardsNS
 {
     public static class CardsStore
     {
         public static readonly List<Card> NorthKingdomsDeck = new List<Card>();
         public static readonly List<Card> NilfgaardDeck = new List<Card>();
-        public static readonly List<Card> NeutralDeck = new List<Card>();              
+        public static readonly List<Card> NeutralDeck = new List<Card>();
 
         static CardsStore()
         {
@@ -31,7 +32,7 @@ namespace Gwent_Release.Models
 
             // UnitCards ///////////////////////////////////////////////////////////////////////////
             NorthKingdomsDeck.Add(new UnitCard("Ballista 1", 6, Fractions.NorthKingdoms, BattleRows.SiegeBattleRow));
-            NorthKingdomsDeck.Add(new UnitCard("Ballista 2", 6, Fractions.NorthKingdoms, BattleRows.SiegeBattleRow));           
+            NorthKingdomsDeck.Add(new UnitCard("Ballista 2", 6, Fractions.NorthKingdoms, BattleRows.SiegeBattleRow));
             NorthKingdomsDeck.Add(new UnitCard("Blue Stripes Commando 1", 4, Fractions.NorthKingdoms, BattleRows.MeleeBattleRow)
             {
                 Effect = EffectModifiersStore.Bond
@@ -128,7 +129,7 @@ namespace Gwent_Release.Models
             NilfgaardDeck.Add(new UnitCard("Fringilla Vigo", 6, Fractions.Nilfgaard, BattleRows.MiddleBattleRow));
             NilfgaardDeck.Add(new UnitCard("Heavy Zerrikanian Fire Scorpion", 10, Fractions.Nilfgaard, BattleRows.SiegeBattleRow));
             NilfgaardDeck.Add(new UnitCard("Impera Brigade Guard 1", 3, Fractions.Nilfgaard, BattleRows.MeleeBattleRow)
-            { 
+            {
                 Effect = EffectModifiersStore.Bond
             });
             NilfgaardDeck.Add(new UnitCard("Impera Brigade Guard 2", 3, Fractions.Nilfgaard, BattleRows.MeleeBattleRow)
@@ -196,17 +197,17 @@ namespace Gwent_Release.Models
             {
                 Effect = EffectModifiersStore.MeleeScorch
             });
-                        
+
             // ActionCards /////////////////////////////////////////////////////////////////////////
             NeutralDeck.Add(new WeatherCard("Biting Frost", BattleRows.WeatherCardsBattleRow, BattleRows.MeleeBattleRow)
             {
                 Effect = EffectModifiersStore.Frost
             });
-            NeutralDeck.Add(new WeatherCard("Impenetrable Fog", BattleRows.WeatherCardsBattleRow, BattleRows.MiddleBattleRow)             
+            NeutralDeck.Add(new WeatherCard("Impenetrable Fog", BattleRows.WeatherCardsBattleRow, BattleRows.MiddleBattleRow)
             {
                 Effect = EffectModifiersStore.Fog
             });
-            NeutralDeck.Add(new WeatherCard("Torrential Rain", BattleRows.WeatherCardsBattleRow, BattleRows.SiegeBattleRow)             
+            NeutralDeck.Add(new WeatherCard("Torrential Rain", BattleRows.WeatherCardsBattleRow, BattleRows.SiegeBattleRow)
             {
                 Effect = EffectModifiersStore.Rain
             });
@@ -227,6 +228,6 @@ namespace Gwent_Release.Models
                 Effect = EffectModifiersStore.Scorch
             });
             // 14
-        }        
+        }
     }
 }
